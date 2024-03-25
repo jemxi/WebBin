@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebBin EcoCollect</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #CCD5C0;
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+
+        header {
+            background-color: #305830;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .navbar {
+            background-color: #305830;
+            color: #fff;
+            padding: 20px;
+            position: fixed;
+            top: 0;
+            left: -200px;
+            width: 200px;
+            height: 100vh;
+            transition: left 0.3s ease;
+            padding-top: 40px;
+        }
+
+            .navbar a {
+                display: block;
+                color: #fff;
+                text-decoration: none;
+                padding: 10px 20px;
+                font-weight: bold;
+                margin-bottom: 10px;
+                transform: translateY(30%);
+                padding-top: 40px;
+                transition: transform 0.3s ease;
+            }
+
+                .navbar a:hover {
+                    transform: scale(1.1);
+                }
+
+        .content {
+            margin-left: 20px;
+            padding: 20px;
+            margin-top: 100px;
+            overflow: auto;
+            margin-bottom: 100px; /* Add margin at the bottom */
+        }
+
+        footer {
+            background-color: #305830;
+            color: #fff;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        #menuButton {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            z-index: 9999;
+        }
+
+        #menuIcon {
+            width: 30px;
+            height: 4px;
+            background-color: #fff;
+            display: block;
+            margin: 6px auto;
+        }
+
+            #menuIcon span {
+                display: block;
+                width: 100%;
+                height: 4px;
+                background-color: #fff;
+                margin: 6px auto;
+                transition: all 0.3s ease;
+            }
+
+            #menuIcon.open span:nth-child(1) {
+                transform: rotate(-45deg) translate(-9px, 6px);
+            }
+
+            #menuIcon.open span:nth-child(2) {
+                opacity: 0;
+            }
+
+            #menuIcon.open span:nth-child(3) {
+                transform: rotate(45deg) translate(-8px, -8px);
+            }
+
+        .video-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 20px; /* Add margin at the bottom */
+        }
+
+            .video-container iframe {
+                margin: 10px;
+            }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #305830;
+            color: white;
+        }
+
+        caption {
+            caption-side: top;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>WebBin EcoCollect</h1>
+        <button id="menuButton">
+            <div id="menuIcon">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </button>
+    </header>
+    <nav class="navbar" id="navbar">
+        <a href="#">Home</a>
+        <a href="#">Updates</a>
+        <a href="#">Schedule</a>
+        <a href="#">Submit Reports</a>
+        <a href="#">About us</a>
+        <a href="#">Log Out</a>
+    </nav>
+    <div class="content">
+        <h2>Pogi si Cee Jay</h2>
+        <p>Better Solutions For The Waste Around You! Keep our Environment Healthy</p>
+        <div class="video-container">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/uCDOm4AcPQk?si=XelR2BL4MXP0domm" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/6f6obJm_lG4?si=361jlXueRX1Xoymn" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+
+        <!-- Additional text -->
+        <h3>Why Recycling is Important</h3>
+        <p>Recycling is important for several reasons, and its significance extends beyond just waste management. Here are some key reasons why recycling is important:</p>
+        <ul>
+            <li>Conservation of Resources</li>
+            <li>Reduction of Landfill Waste</li>
+            <li>Energy Savings</li>
+            <li>Reduction of Pollution</li>
+            <li>Conservation of Habitat</li>
+            <li>Creation of Jobs</li>
+            <li>Promotion of Sustainability</li>
+            <li>Preservation of Biodiversity</li>
+        </ul>
+        <p>Overall, recycling plays a crucial role in environmental protection, resource conservation, and sustainable development, making it an essential practice for individuals, communities, and societies worldwide.</p>
+    </div>
+
+    <!-- Weekly schedule box table -->
+    <table>
+        <caption>Weekly Schedule</caption>
+        <thead>
+            <tr>
+                <th>Day</th>
+                <th>Time Slot</th>
+                <th>Activity</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td rowspan="8">Monday</td>
+                <td>7:00 AM - 8:00 AM</td>
+                <td>Activity 1</td>
+            </tr>
+            <tr>
+                <td>8:00 AM - 9:00 AM</td>
+                <td>Activity 2</td>
+            </tr>
+            <tr>
+                <td>9:00 AM - 10:00 AM</td>
+                <td>Activity 3</td>
+            </tr>
+            <tr>
+                <td>10:00 AM - 11:00 AM</td>
+                <td>Activity 4</td>
+            </tr>
+            <tr>
+                <td>1:00 PM - 2:00 PM</td>
+                <td>Activity 5</td>
+            </tr>
+            <tr>
+                <td>2:00 PM - 3:00 PM</td>
+                <td>Activity 6</td>
+            </tr>
+            <tr>
+                <td>3:00 PM - 4:00 PM</td>
+                <td>Activity 7</td>
+            </tr>
+            <tr>
+                <td>4:00 PM - 5:00 PM</td>
+                <td>Activity 8</td>
+            </tr>
+            <tr>
+                <td rowspan="8">Tuesday</td>
+                <td>7:00 AM - 8:00 AM</td>
+                <td>Activity 1</td>
+            </tr>
+            <tr>
+                <td>8:00 AM - 9:00 AM</td>
+                <td>Activity 2</td>
+            </tr>
+            <tr>
+                <td>9:00 AM - 10:00 AM</td>
+                <td>Activity 3</td>
+            </tr>
+            <tr>
+                <td>10:00 AM - 11:00 AM</td>
+                <td>Activity 4</td>
+            </tr>
+            <tr>
+                <td>1:00 PM - 2:00 PM</td>
+                <td>Activity 5</td>
+            </tr>
+            <tr>
+                <td>2:00 PM - 3:00 PM</td>
+                <td>Activity 6</td>
+            </tr>
+            <tr>
+                <td>3:00 PM - 4:00 PM</td>
+                <td>Activity 7</td>
+            </tr>
+            <tr>
+                <td>4:00 PM - 5:00 PM</td>
+                <td>Activity 8</td>
+            </tr>
+            <tr>
+                <td rowspan="8">Wednesday</td>
+                <td>7:00 AM - 8:00 AM</td>
+                <td>Activity 1</td>
+            </tr>
+            <tr>
+                <td>8:00 AM - 9:00 AM</td>
+                <td>Activity 2</td>
+            </tr>
+            <tr>
+                <td>9:00 AM - 10:00 AM</td>
+                <td>Activity 3</td>
+            </tr>
+            <tr>
+                <td>10:00 AM - 11:00 AM</td>
+                <td>Activity 4</td>
+            </tr>
+            <tr>
+                <td>1:00 PM - 2:00 PM</td>
+                <td>Activity 5</td>
+            </tr>
+            <tr>
+                <td>2:00 PM - 3:00 PM</td>
+                <td>Activity 6</td>
+            </tr>
+            <tr>
+                <td>3:00 PM - 4:00 PM</td>
+                <td>Activity 7</td>
+            </tr>
+            <tr>
+                <td>4:00 PM - 5:00 PM</td>
+                <td>Activity 8</td>
+            </tr>
+            <tr>
+                <td rowspan="8">Thursday</td>
+                <td>7:00 AM - 8:00 AM</td>
+                <td>Activity 1</td>
+            </tr>
+            <tr>
+                <td>8:00 AM - 9:00 AM</td>
+                <td>Activity 2</td>
+            </tr>
+            <tr>
+                <td>9:00 AM - 10:00 AM</td>
+                <td>Activity 3</td>
+            </tr>
+            <tr>
+                <td>10:00 AM - 11:00 AM</td>
+                <td>Activity 4</td>
+            </tr>
+            <tr>
+                <td>1:00 PM - 2:00 PM</td>
+                <td>Activity 5</td>
+            </tr>
+            <tr>
+                <td>2:00 PM - 3:00 PM</td>
+                <td>Activity 6</td>
+            </tr>
+            <tr>
+                <td>3:00 PM - 4:00 PM</td>
+                <td>Activity 7</td>
+            </tr>
+            <tr>
+                <td>4:00 PM - 5:00 PM</td>
+                <td>Activity 8</td>
+            </tr>
+            <tr>
+                <td rowspan="8">Friday</td>
+                <td>7:00 AM - 8:00 AM</td>
+                <td>Activity 1</td>
+            </tr>
+            <tr>
+                <td>8:00 AM - 9:00 AM</td>
+                <td>Activity 2</td>
+            </tr>
+            <tr>
+                <td>9:00 AM - 10:00 AM</td>
+                <td>Activity 3</td>
+            </tr>
+            <tr>
+                <td>10:00 AM - 11:00 AM</td>
+                <td>Activity 4</td>
+            </tr>
+            <tr>
+                <td>1:00 PM - 2:00 PM</td>
+                <td>Activity 5</td>
+            </tr>
+            <tr>
+                <td>2:00 PM - 3:00 PM</td>
+                <td>Activity 6</td>
+            </tr>
+            <tr>
+                <td>3:00 PM - 4:00 PM</td>
+                <td>Activity 7</td>
+            </tr>
+            <tr>
+                <td>4:00 PM - 5:00 PM</td>
+                <td>Activity 8</td>
+            <tr>
+                <td rowspan="8">Saturday</td>
+                <td>7:00 AM - 8:00 AM</td>
+                <td>Activity 1</td>
+            </tr>
+            <tr>
+                <td>8:00 AM - 9:00 AM</td>
+                <td>Activity 2</td>
+            </tr>
+            <tr>
+                <td>9:00 AM - 10:00 AM</td>
+                <td>Activity 3</td>
+            </tr>
+            <tr>
+                <td>10:00 AM - 11:00 AM</td>
+                <td>Activity 4</td>
+            </tr>
+            <tr>
+                <td>1:00 PM - 2:00 PM</td>
+                <td>Activity 5</td>
+            </tr>
+            <tr>
+                <td>2:00 PM - 3:00 PM</td>
+                <td>Activity 6</td>
+            </tr>
+            <tr>
+                <td>3:00 PM - 4:00 PM</td>
+                <td>Activity 7</td>
+            </tr>
+            <tr>
+                <td>4:00 PM - 5:00 PM</td>
+                <td>Activity 8</td>
+            </tr>
+            
+        </tbody>
+    </table>
+
+    <footer>
+        <p>&copy; 2024 WebBin EcoCollect. All rights reserved.</p>
+    </footer>
+    </footer>
+
+    <script>
+        // JavaScript to toggle navbar visibility
+        const menuButton = document.getElementById('menuButton');
+        const navbar = document.getElementById('navbar');
+
+        menuButton.addEventListener('click', () => {
+            if (navbar.style.left === '0px') {
+                navbar.style.left = '-200px';
+            } else {
+                navbar.style.left = '0px';
+            }
+            menuButton.querySelector('#menuIcon').classList.toggle('open');
+        });
+    </script>
+</body>
+</html>
