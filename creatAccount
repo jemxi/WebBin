@@ -7,8 +7,10 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #305830; 
+            background-color: #20ac4a; 
             margin: 0;
+
+            
             padding: 0;
             display: flex;
             justify-content: center;
@@ -71,6 +73,7 @@
             <input type="email" name="email" placeholder="Email Address" required>
             <input type="password" name="password" placeholder="Password" required>
             <input type="submit" value="Create Account">
+            <a href="login.html">Already have an account? login here</a>
         </form>
     </div>
 </body>
