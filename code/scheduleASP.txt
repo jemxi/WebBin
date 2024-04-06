@@ -1,0 +1,386 @@
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="schedule.aspx.cs" Inherits="BinWeb.schedule" %>
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head runat="server">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Report</title>
+
+    <style>
+          body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+        }
+        header, .navbar {
+            background-color: #305830;
+            color: #fff;
+            padding: 10px 20px;
+            text-align: center;
+        }
+        header h1 {
+            margin: 0;
+        }
+        .navbar a {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px;
+        }
+        main {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin: 20px auto;
+            max-width: 800px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #305830;
+            color: #fff;
+            font-weight: bold;
+        }
+        caption {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        footer {
+            background-color: #305830;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+    </style>
+</head>
+<body>
+
+        <header>
+            <h1>WebBin EcoCollect</h1>
+        </header>
+       <nav class="navbar" id="navbar">
+    <asp:HyperLink ID="linkHome" runat="server" NavigateUrl="~/index.aspx" Text="Home" />
+    <asp:HyperLink ID="linkUpdates" runat="server" NavigateUrl="#" Text="Updates" />
+    <asp:HyperLink ID="linkSchedule" runat="server" NavigateUrl="~/schedule.aspx" Text="Schedule" />
+    <asp:HyperLink ID="linkSubmitReport" runat="server" NavigateUrl="~/submitreport.aspx" Text="Submit Reports" />
+    <asp:HyperLink ID="linkAboutUs" runat="server" NavigateUrl="~/aboutus.aspx" Text="About us" />
+    <asp:HyperLink ID="linkLogOut" runat="server" NavigateUrl="#" Text="Log Out" />
+</nav>
+
+            <table>
+        <caption>Weekly Garbage Schedule</caption>
+        <thead>
+            <tr>
+                <th>Day</th>
+                <th>Time Slot</th>
+                <th>Activity</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td rowspan="8">Monday</td>
+                <td>7:00 AM - 8:00 AM</td>
+                <td>Activity 1</td>
+            </tr>
+            <tr>
+                <td>8:00 AM - 9:00 AM</td>
+                <td>Activity 2</td>
+            </tr>
+            <tr>
+                <td>9:00 AM - 10:00 AM</td>
+                <td>Activity 3</td>
+            </tr>
+            <tr>
+                <td>10:00 AM - 11:00 AM</td>
+                <td>Activity 4</td>
+            </tr>
+            <tr>
+                <td>1:00 PM - 2:00 PM</td>
+                <td>Activity 5</td>
+            </tr>
+            <tr>
+                <td>2:00 PM - 3:00 PM</td>
+                <td>Activity 6</td>
+            </tr>
+            <tr>
+                <td>3:00 PM - 4:00 PM</td>
+                <td>Activity 7</td>
+            </tr>
+            <tr>
+                <td>4:00 PM - 5:00 PM</td>
+                <td>Activity 8</td>
+            </tr>
+            <tr>
+                <td rowspan="8">Tuesday</td>
+                <td>7:00 AM - 8:00 AM</td>
+                <td>Activity 1</td>
+            </tr>
+            <tr>
+                <td>8:00 AM - 9:00 AM</td>
+                <td>Activity 2</td>
+            </tr>
+            <tr>
+                <td>9:00 AM - 10:00 AM</td>
+                <td>Activity 3</td>
+            </tr>
+            <tr>
+                <td>10:00 AM - 11:00 AM</td>
+                <td>Activity 4</td>
+            </tr>
+            <tr>
+                <td>1:00 PM - 2:00 PM</td>
+                <td>Activity 5</td>
+            </tr>
+            <tr>
+                <td>2:00 PM - 3:00 PM</td>
+                <td>Activity 6</td>
+            </tr>
+            <tr>
+                <td>3:00 PM - 4:00 PM</td>
+                <td>Activity 7</td>
+            </tr>
+            <tr>
+                <td>4:00 PM - 5:00 PM</td>
+                <td>Activity 8</td>
+            </tr>
+            <tr>
+                <td rowspan="8">Wednesday</td>
+                <td>7:00 AM - 8:00 AM</td>
+                <td>Activity 1</td>
+            </tr>
+            <tr>
+                <td>8:00 AM - 9:00 AM</td>
+                <td>Activity 2</td>
+            </tr>
+            <tr>
+                <td>9:00 AM - 10:00 AM</td>
+                <td>Activity 3</td>
+            </tr>
+            <tr>
+                <td>10:00 AM - 11:00 AM</td>
+                <td>Activity 4</td>
+            </tr>
+            <tr>
+                <td>1:00 PM - 2:00 PM</td>
+                <td>Activity 5</td>
+            </tr>
+            <tr>
+                <td>2:00 PM - 3:00 PM</td>
+                <td>Activity 6</td>
+            </tr>
+            <tr>
+                <td>3:00 PM - 4:00 PM</td>
+                <td>Activity 7</td>
+            </tr>
+            <tr>
+                <td>4:00 PM - 5:00 PM</td>
+                <td>Activity 8</td>
+            </tr>
+            <tr>
+                <td rowspan="8">Thursday</td>
+                <td>7:00 AM - 8:00 AM</td>
+                <td>Activity 1</td>
+            </tr>
+            <tr>
+                <td>8:00 AM - 9:00 AM</td>
+                <td>Activity 2</td>
+            </tr>
+            <tr>
+                <td>9:00 AM - 10:00 AM</td>
+                <td>Activity 3</td>
+            </tr>
+            <tr>
+                <td>10:00 AM - 11:00 AM</td>
+                <td>Activity 4</td>
+            </tr>
+            <tr>
+                <td>1:00 PM - 2:00 PM</td>
+                <td>Activity 5</td>
+            </tr>
+            <tr>
+                <td>2:00 PM - 3:00 PM</td>
+                <td>Activity 6</td>
+            </tr>
+            <tr>
+                <td>3:00 PM - 4:00 PM</td>
+                <td>Activity 7</td>
+            </tr>
+            <tr>
+                <td>4:00 PM - 5:00 PM</td>
+                <td>Activity 8</td>
+            </tr>
+            <tr>
+                <td rowspan="8">Friday</td>
+                <td>7:00 AM - 8:00 AM</td>
+                <td>Activity 1</td>
+            </tr>
+            <tr>
+                <td>8:00 AM - 9:00 AM</td>
+                <td>Activity 2</td>
+            </tr>
+            <tr>
+                <td>9:00 AM - 10:00 AM</td>
+                <td>Activity 3</td>
+            </tr>
+            <tr>
+                <td>10:00 AM - 11:00 AM</td>
+                <td>Activity 4</td>
+            </tr>
+            <tr>
+                <td>1:00 PM - 2:00 PM</td>
+                <td>Activity 5</td>
+            </tr>
+            <tr>
+                <td>2:00 PM - 3:00 PM</td>
+                <td>Activity 6</td>
+            </tr>
+            <tr>
+                <td>3:00 PM - 4:00 PM</td>
+                <td>Activity 7</td>
+            </tr>
+            <tr>
+                <td>4:00 PM - 5:00 PM</td>
+                <td>Activity 8</td>
+            <tr>
+                <td rowspan="8">Saturday</td>
+                <td>7:00 AM - 8:00 AM</td>
+                <td>Activity 1</td>
+            </tr>
+            <tr>
+                <td>8:00 AM - 9:00 AM</td>
+                <td>Activity 2</td>
+            </tr>
+            <tr>
+                <td>9:00 AM - 10:00 AM</td>
+                <td>Activity 3</td>
+            </tr>
+            <tr>
+                <td>10:00 AM - 11:00 AM</td>
+                <td>Activity 4</td>
+            </tr>
+            <tr>
+                <td>1:00 PM - 2:00 PM</td>
+                <td>Activity 5</td>
+            </tr>
+            <tr>
+                <td>2:00 PM - 3:00 PM</td>
+                <td>Activity 6</td>
+            </tr>
+            <tr>
+                <td>3:00 PM - 4:00 PM</td>
+                <td>Activity 7</td>
+            </tr>
+            <tr>
+                <td>4:00 PM - 5:00 PM</td>
+                <td>Activity 8</td>
+            </tr>
+        </tbody>
+    </table>
+    <table id="schedule">
+        <caption>Week 2 Continuation of collection</caption>
+        <thead>
+            <tr>
+                <th>Day</th>
+                <th>Time Slot</th>
+                <th>Activity</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td rowspan="8">Monday</td>
+                <td>7:00 AM - 8:00 AM</td>
+                <td>Activity 1</td>
+            </tr>
+            <tr>
+                <td>8:00 AM - 9:00 AM</td>
+                <td>Activity 2</td>
+            </tr>
+            <tr>
+                <td>9:00 AM - 10:00 AM</td>
+                <td>Activity 3</td>
+            </tr>
+            <tr>
+                <td>10:00 AM - 11:00 AM</td>
+                <td>Activity 4</td>
+            </tr>
+            <tr>
+                <td>1:00 PM - 2:00 PM</td>
+                <td>Activity 5</td>
+            </tr>
+            <tr>
+                <td>2:00 PM - 3:00 PM</td>
+                <td>Activity 6</td>
+            </tr>
+            <tr>
+                <td>3:00 PM - 4:00 PM</td>
+                <td>Activity 7</td>
+            </tr>
+            <tr>
+                <td>4:00 PM - 5:00 PM</td>
+                <td>Activity 8</td>
+            </tr>
+            <tr>
+                <td rowspan="8">Tuesday</td>
+                <td>7:00 AM - 8:00 AM</td>
+                <td>Activity 1</td>
+            </tr>
+            <tr>
+                <td>8:00 AM - 9:00 AM</td>
+                <td>Activity 2</td>
+            </tr>
+            <tr>
+                <td>9:00 AM - 10:00 AM</td>
+                <td>Activity 3</td>
+            </tr>
+            <tr>
+                <td>10:00 AM - 11:00 AM</td>
+                <td>Activity 4</td>
+            </tr>
+            <tr>
+                <td>1:00 PM - 2:00 PM</td>
+                <td>Activity 5</td>
+            </tr>
+            <tr>
+                <td>2:00 PM - 3:00 PM</td>
+                <td>Activity 6</td>
+            </tr>
+            <tr>
+                <td>3:00 PM - 4:00 PM</td>
+                <td>Activity 7</td>
+            </tr>
+            <tr>
+                <td>4:00 PM - 5:00 PM</td>
+                <td>Activity 8</td>
+            </tr>
+
+        </tbody>
+    </table>
+
+    <footer>
+        <p>&copy; 2024 WebBin EcoCollect. All rights reserved.</p>
+    </footer>
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,121 @@
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="index.aspx.cs" Inherits="BinWeb.index" %>
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head runat="server">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Report</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+        }
+
+        header {
+            background-color: #305830;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        .navbar {
+            background-color: #305830;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .navbar a {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px;
+        }
+
+        main {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin: 20px auto;
+            max-width: 800px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button[type="submit"] {
+            background-color: #305830;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #284d29;
+        }
+    </style>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <header>
+            <h1>WebBin EcoCollect</h1>
+        </header>
+        <nav class="navbar" id="navbar">
+    <asp:HyperLink ID="linkHome" runat="server" NavigateUrl="~/index.aspx" Text="Home" />
+    <asp:HyperLink ID="linkUpdates" runat="server" NavigateUrl="#" Text="Updates" />
+    <asp:HyperLink ID="linkSchedule" runat="server" NavigateUrl="~/schedule.aspx" Text="Schedule" />
+    <asp:HyperLink ID="linkSubmitReport" runat="server" NavigateUrl="~/submitreport.aspx" Text="Submit Reports" />
+    <asp:HyperLink ID="linkAboutUs" runat="server" NavigateUrl="~/aboutus.aspx" Text="About us" />
+    <asp:HyperLink ID="linkLogOut" runat="server" NavigateUrl="#" Text="Log Out" />
+</nav>
+
+        <div class="content">
+            <h2>Pogi si Cee Jay</h2>
+            <p>Better Solutions For The Waste Around You! Keep our Environment Healthy</p>
+      
+            <div class="video-container">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/uCDOm4AcPQk?si=XelR2BL4MXP0domm" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/6f6obJm_lG4?si=361jlXueRX1Xoymn" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+
+            <h3>Why Recycling is Important</h3>
+            <p>Recycling is important for several reasons, and its significance extends beyond just waste management. Here are some key reasons why recycling is important:</p>
+            <ul>
+                <li>Conservation of Resources</li>
+                <li>Reduction of Landfill Waste</li>
+                <li>Energy Savings</li>
+                <li>Reduction of Pollution</li>
+                <li>Conservation of Habitat</li>
+                <li>Creation of Jobs</li>
+                <li>Promotion of Sustainability</li>
+                <li>Preservation of Biodiversity</li>
+            </ul>
+            <p>Overall, recycling plays a crucial role in environmental protection, resource conservation, and sustainable development, making it an essential practice for individuals, communities, and societies worldwide.</p>
+        </div>
+        <footer>
+            <p>&copy; 2024 WebBin EcoCollect. All rights reserved.</p>
+        </footer>
+    </form>
+</body>
+</html>

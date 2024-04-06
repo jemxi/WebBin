@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About Us - WebBin EcoCollect</title>
+    <style>
+   
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+        }
+
+        
+        header {
+            background-color: #305830;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+       /*sa nav bar mga gar*/
+        nav {
+            background-color: #305830;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px;
+            margin: 0 5px;
+            font-size: 18px;
+        }
+
+        nav a:hover {
+            background-color: #284d29;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .about-section {
+            margin-bottom: 30px;
+        }
+
+        .about-section h2 {
+            font-size: 22px;
+            margin-bottom: 10px;
+        }
+
+        .about-section p {
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .team-members {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 10px;
+        }
+
+        .team-member {
+            text-align: center;
+        }
+
+        .team-member img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
+
+        .team-member h3 {
+            margin-bottom: 5px;
+            font-size: 16px;
+        }
+
+        .team-member p {
+            margin-bottom: 10px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .service {
+            margin-bottom: 20px;
+        }
+
+        .service h3 {
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+
+
+        footer {
+            background-color: #305830;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <header>
+            <h1>WebBin EcoCollect</h1>
+            <button id="menuButton">
+                <div id="menuIcon">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </button>
+        </header>
+       <nav>
+    <asp:HyperLink ID="linkHome" runat="server" NavigateUrl="~/index.aspx" Text="Home" />
+    <asp:HyperLink ID="linkUpdates" runat="server" NavigateUrl="#" Text="Updates" />
+    <asp:HyperLink ID="linkSchedule" runat="server" NavigateUrl="~/schedule.aspx" Text="Schedule" />
+    <asp:HyperLink ID="linkSubmitReport" runat="server" NavigateUrl="~/submitreport.aspx" Text="Submit Reports" />
+    <asp:HyperLink ID="linkAboutUs" runat="server" NavigateUrl="~/aboutus.aspx" Text="About us" />
+    <asp:HyperLink ID="linkLogOut" runat="server" NavigateUrl="#" Text="Log Out" />
+</nav>
+
+        <div class="container">
+            <section class="about-section">
+                <h2>Welcome to EcoCollect</h2>
+                <p>At EcoCollect, we're passionate about creating a sustainable future for our planet. Our mission is to provide innovative solutions for waste management that reduce environmental impact and promote a cleaner, greener world.</p>
+            </section>
+            <section class="about-section">
+                <h2>Our Story</h2>
+                <p>Founded in 2024, EcoCollect began as a small initiative to address the growing challenge of waste management. Over the years, we've grown into a leading organization dedicated to revolutionizing the way we manage waste.</p>
+            </section>
+            <section class="about-section">
+                <h2>Our Team</h2>
+                <div class="team-members">
+                    <div class="team-member">
+                        <img src="https://via.placeholder.com/150" alt="John Emmanuel Menor">
+                        <h3>John Emmanuel Menor</h3>
+                        <p>Chief</p>
+                    </div>
+                    <div class="team-member">
+                        <img src="https://via.placeholder.com/150" alt="Cee Jay Madayag">
+                        <h3>Cee Jay Madayag</h3>
+                        <p>Chief</p>
+                    </div>
+                    <div class="team-member">
+                        <img src="https://via.placeholder.com/150" alt="Harold Jirro Madrona">
+                        <h3>Harold Jirro Madrona</h3>
+                        <p>Chief</p>
+                    </div>
+                    <div class="team-member">
+                        <img src="https://via.placeholder.com/150" alt="Joshua Martin">
+                        <h3>Joshua Martin</h3>
+                        <p>Chief</p>
+                    </div>
+                    <div class="team-member">
+                        <img src="https://via.placeholder.com/150" alt="Kathreen Gutierrez">
+                        <h3>Kathreen Gutierrez</h3>
+                        <p>Chief</p>
+                    </div>
+                </div>
+            </section>
+            <section class="about-section">
+                <h2>Our Services</h2>
+                <div class="service">
+                    <h3>Waste Collection</h3>
+                    <p>We offer efficient waste collection services for households, businesses, and communities.</p>
+                </div>
+                <div class="service">
+                    <h3>Recycling Programs</h3>
+                    <p>Our recycling programs help divert waste from landfills and promote recycling practices.</p>
+                </div>
+                <div class="service">
+                    <h3>Education & Outreach</h3>
+                    <p>We provide educational resources and outreach programs to raise awareness about waste management and environmental conservation.</p>
+                </div>
+            </section>
+            <section class="about-section">
+                <h2>Get Involved</h2>
+                <div class="contact-section">
+                    <p>Join us in our mission to create a cleaner, greener future. <a href="contact.html">Contact us</a> to learn more about our services, partnerships, and how you can contribute to our cause.</p>
+                </div>
+            </section>
+        </div>
+        <footer>
+            <p>&copy; 2024 WebBin EcoCollect. All rights reserved.</p>
+        </footer>
+    </form>
+</body>
+</html>
