@@ -31,6 +31,7 @@
         margin: auto;
     }
     .login-form input[type="text"],
+    .login-form input[type="email"],
     .login-form input[type="password"] {
         width: 100%;
         padding: 10px;
@@ -69,6 +70,7 @@
     <div class="login-form">
         <form id="login-form" class="login-form">
             <input type="text" name="username" placeholder="Username" required>
+            <input type="text" name="email" placeholder="Email Address" required>
             <input type="password" name="password" placeholder="Password" required>
             <select name="role" required>
                 <option value="user">User</option>
@@ -85,6 +87,7 @@
         event.preventDefault();
         var formData = new FormData(this);
         var username = formData.get('username');
+        var email = formData.get('email');
         var password = formData.get('password');
         var role = formData.get('role');
 
