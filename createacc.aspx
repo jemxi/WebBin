@@ -1,7 +1,4 @@
-<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="createacc.aspx.cs" Inherits="createacc.createacc" %>
-
 <!DOCTYPE html>
-
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title>Create Account</title>
@@ -36,6 +33,7 @@
             padding: 10px 20px;
             margin: 10px;
             outline: #CCD5C0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         .custom-button:hover {
@@ -47,15 +45,33 @@
         .dropdown {
             margin-top: 10px;
         }
+
+        /* Bold label style */
+        .bold-label {
+            font-weight: bold;
+        }
+
+        /* Textbox style */
+        input[type="text"],
+        input[type="password"],
+        select {
+            padding: 10px;
+            border: 2px solid #305830;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            outline: none;
+            width: calc(100% - 24px); /* Adjusted to maintain the original size */
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
     <form id="form1" runat="server">
         <div class="center">
             <h2>Create Account</h2>
-            <label for="username">Username:</label>
+            <label for="username" class="bold-label">Username:</label>
             <input type="text" id="username" name="username" /><br /><br />
-            <label for="password">Password:</label>
+            <label for="password" class="bold-label">Password:</label>
             <input type="password" id="password" name="password" /><br /><br />
             <select id="role" name="role" class="dropdown">
                 <option value="user">User</option>
