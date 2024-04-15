@@ -33,7 +33,9 @@
             padding: 10px 20px;
             margin: 10px;
             outline: #CCD5C0;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1),
+                        3px 3px 6px rgba(0, 0, 0, 0.1),
+                        -3px -3px 6px rgba(255, 255, 255, 0.8) inset;
         }
 
         .custom-button:hover {
@@ -58,7 +60,9 @@
             padding: 10px;
             border: 2px solid #305830;
             border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1),
+                        3px 3px 6px rgba(0, 0, 0, 0.1),
+                        -3px -3px 6px rgba(255, 255, 255, 0.8) inset;
             outline: none;
             width: calc(100% - 24px); /* Adjusted to maintain the original size */
             margin-bottom: 10px;
