@@ -1,0 +1,133 @@
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="update.aspx.cs" Inherits="WebApplication1.update" %>
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head runat="server">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Report</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+        }
+
+        header {
+            background-color: #305830;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        .navbar {
+            background-color: #305830;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .navbar a {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px;
+        }
+
+        main {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin: 20px auto;
+            max-width: 800px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button[type="submit"] {
+            background-color: #305830;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #284d29;
+        }
+
+        footer {
+            background-color: #305830;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+
+    </style>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <header>
+            <h1>WebBin EcoCollect</h1>
+        </header>
+        <nav class="navbar" id="navbar">
+            <asp:HyperLink ID="linkHome" runat="server" NavigateUrl="~/home.aspx" Text="Home" />
+            <asp:HyperLink ID="linkUpdates" runat="server" NavigateUrl="#" Text="Updates" />
+            <asp:HyperLink ID="linkSchedule" runat="server" NavigateUrl="~/schedule.aspx" Text="Schedule" />
+            <asp:HyperLink ID="linkSubmitReport" runat="server" NavigateUrl="~/submitreport.aspx" Text="Submit Reports" />
+            <asp:HyperLink ID="linkAboutUs" runat="server" NavigateUrl="~/aboutus.aspx" Text="About us" />
+            <asp:HyperLink ID="linkLogOut" runat="server" NavigateUrl="#" Text="Log Out" onclick="return confirmLogout();" />
+        </nav>
+        <main>
+            <div class="container">
+                <h1>POST UPDATES</h1>
+                <div>
+                    <asp:Label ID="lblSuccess" runat="server" Visible="false" Text="Form submitted successfully!" CssClass="modal"></asp:Label>
+                </div>
+                <div class="form-group">
+                    <label for="title">SUBJECT:</label>
+                    <asp:TextBox ID="txtTitle" runat="server" CssClass="form-control" required></asp:TextBox>
+                </div>
+                <div class="form-group">
+                    <label for="content">CONTENT:</label>
+                    <asp:TextBox ID="txtContent" runat="server" CssClass="form-control" TextMode="MultiLine" Rows="5" required></asp:TextBox>
+                </div>
+                <asp:Button ID="btnPost" runat="server" Text="Post" CssClass="btn btn-primary" OnClick="btnPost_Click" />
+            </div>
+        </main>
+        <footer>
+            <p>&copy; 2024 WebBin EcoCollect. All rights reserved.</p>
+        </footer>
+    </form>
+
+    <script>
+        function confirmLogout() {
+            if (confirm("Are you sure you want to logout?")) {
+                window.location.href = "WebForm1.aspx";
+                return true;
+            } else {
+                return false;
+            }
+        }
+    </script>
+</body>
+</html>
