@@ -72,9 +72,7 @@
             cursor: pointer;
             border-radius: 3px;
             outline: none;
-            width: 100%;
-            display: inline-block; 
-            margin-bottom: 10px; 
+            width: calc(33.33% - 5px);
         }
         .form-group input[type="submit"]:hover,
         .form-group button:hover {
@@ -94,18 +92,33 @@
             color: #0056b3; 
         }
         
-        #GoogleLoginButton {
-            background-color: #fff;
-            color: #305830;
-            border: 2px solid #305830;
-        }
-        #GoogleLoginButton:hover {
+       .GoogleButton {
+            display: block; /* Change to block to center it */
+            text-align: center; /* Center the content */
+            width: calc(100% - 40px);
+            margin: 10px auto 0; /* Adjust margin to center it below the "Login as Admin" button */
+             margin-top:-10px
+         }
+
+        .GoogleButton button {
+            background-color: transparent; /* Remove background color */
+            color: #305830; /* Set text color */
+            border: none; /* Remove border */
+            padding: 0; /* Remove padding */
+            cursor: pointer;
+            border-radius: 3px;
+            transition: background-color 0.3s;
+            margin-top:-10px
+         }
+
+        .GoogleButton button:hover {
             background-color: #f0f0f0;
         }
-        #GoogleLoginButton i {
+
+        .GoogleButton i {
             margin-right: 10px;
         }
-       
+
         .admin-login {
             display: inline-block;
             padding: 10px 20px;
@@ -115,12 +128,29 @@
             border-radius: 3px;
             text-decoration: none;
             transition: background-color 0.3s;
-            margin-bottom: 10px; 
+            margin-bottom: 5px; /* Adjusted margin to lower the button */
+            width: calc(100% - 40px); /* Same width calculation as GoogleLoginButton */
+            margin-top:5px;
         }
+
 
         .admin-login:hover {
             background-color: #284d29;
         }
+
+         #loginbtn,
+         #clearbtn,
+         #cancelbtn {
+             border-style: none;
+             border-color: inherit;
+             border-width: medium;
+             padding: 10px;
+             background-color: #305830;
+             color: #fff;
+             cursor: pointer;
+             border-radius: 3px;
+             outline: none;
+         }
     </style>
 
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
@@ -145,8 +175,11 @@
                 <asp:Button ID="loginbtn" runat="server" Text="Login" CssClass="loginbtn" OnClick="Button1_Click" />
                 <asp:Button ID="clearbtn" runat="server" OnClick="Button1_Click1" Text="Clear" />
                 <asp:Button ID="cancelbtn" runat="server" OnClick="Button2_Click" Text="Cancel" />
-                <asp:Button ID="Button1" runat="server" Text="Sign in with Google" OnClick="GoogleLoginButton_Click" />
-                <asp:HyperLink ID="HyperLinkAdminLogin" runat="server" NavigateUrl="~/adminlogin.aspx" CssClass="admin-login" Text="Admin as Login" />
+               
+                <asp:HyperLink ID="HyperLinkAdminLogin" runat="server" NavigateUrl="~/adminlogin.aspx" CssClass="admin-login" Text="Login as Admin" />
+            </div>
+            <div class="GoogleButton">
+                <asp:Button ID="Button2" runat="server" Text="Sign in with Google" OnClick="GoogleLoginButton_Click" />
             </div>
             <div class="form-group">
                <asp:HyperLink ID="HyperLink2" runat="server" NavigateUrl="~/resetpassword.aspx" Text="Forgot Password?" Font-Size="12px" ForeColor="#305830"></asp:HyperLink>
