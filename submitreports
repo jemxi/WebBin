@@ -1,7 +1,6 @@
 <%@ Page Language="C#" AutoEventWireup="true" CodeBehind="submitreport.aspx.cs" Inherits="WebApplication1.submitreport" %>
 
 
-
 <!DOCTYPE html>
 
 <html lang="en">
@@ -64,17 +63,43 @@
         }
 
         button[type="submit"] {
-            background-color: #305830;
-            color: #fff;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
+            border-style: none;
+             border-color: inherit;
+             border-width: medium;
+             padding: 10px;
+             background-color: #305830;
+             color: #fff;
+             cursor: pointer;
+             border-radius: 3px;
+             outline: none;
+             width:  calc(20% - 5px);
         }
 
         button[type="submit"]:hover {
             background-color: #284d29;
+        }
+
+        footer {
+            background-color: #305830;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+        }
+        submitReportButton {
+            border-style: none;
+            border-color: inherit;
+            border-width: medium;
+            padding: 10px;
+            background-color: #305830;
+            color: #fff;
+            cursor: pointer;
+            border-radius: 3px;
+            outline: none;
+            width:  calc(20% - 5px);
         }
     </style>
 </head>
@@ -84,14 +109,14 @@
             <h1>WebBin EcoCollect</h1>
         </header>
         <nav class="navbar" id="navbar">
-    <asp:HyperLink ID="linkHome" runat="server" NavigateUrl="~/home.aspx" Text="Home" />
-    <asp:HyperLink ID="linkUpdates" runat="server" NavigateUrl="#" Text="Updates" />
-    <asp:HyperLink ID="linkSchedule" runat="server" NavigateUrl="~/schedule.aspx" Text="Schedule" />
-    <asp:HyperLink ID="linkSubmitReport" runat="server" NavigateUrl="~/submitreport.aspx" Text="Submit Reports" />
-    <asp:HyperLink ID="linkAboutUs" runat="server" NavigateUrl="~/aboutus.aspx" Text="About us" />
-    <asp:HyperLink ID="linkLogOut" runat="server" NavigateUrl="#" Text="Log Out" />
-</nav>
+            <asp:HyperLink ID="linkHome" runat="server" NavigateUrl="~/home.aspx" Text="Home" />
+            <asp:HyperLink ID="linkUpdates" runat="server" NavigateUrl="#" Text="Updates" />
+            <asp:HyperLink ID="linkSchedule" runat="server" NavigateUrl="~/schedule.aspx" Text="Schedule" />
+            <asp:HyperLink ID="linkSubmitReport" runat="server" NavigateUrl="~/submitreport.aspx" Text="Submit Reports" />
+            <asp:HyperLink ID="linkAboutUs" runat="server" NavigateUrl="~/aboutus.aspx" Text="About us" />
+            <asp:HyperLink ID="linkLogOut" runat="server" NavigateUrl="#" Text="Log Out" />
         </nav>
+        
         <main>
             <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
             <asp:UpdatePanel ID="UpdatePanel1" runat="server">
@@ -106,6 +131,10 @@
                 </ContentTemplate>
             </asp:UpdatePanel>
         </main>
+
+        <footer>
+            <p>&copy; 2024 WebBin EcoCollect. All rights reserved.</p>
+        </footer>
     </form>
 </body>
 </html>
