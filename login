@@ -33,8 +33,6 @@
             margin-bottom: 20px;
             position: relative;
             text-align: center; 
-            display: flex; /* Horizontally align buttons */
-            justify-content: space-between; /* Add space between buttons */
         }
         .form-group label {
             display: block;
@@ -74,36 +72,42 @@
             cursor: pointer;
             border-radius: 3px;
             outline: none;
-            width: calc(33.33% - 5px); /* Adjust width to fit three buttons */
+            width: 100%;
+            display: inline-block; 
+            margin-bottom: 10px; 
         }
-
         .form-group input[type="submit"]:hover,
         .form-group button:hover {
             background-color: #0056b3;
         }
-
-       #GoogleLoginButton {
+   
+        .form-group #Label1,
+        .form-group #HyperLink1 {
+            display: block;
+            font-size: 20px; 
+            margin: 10px auto;
+            color: #305830;
+            
+        }
+        
+        .form-group #HyperLink1:hover {
+            color: #0056b3; 
+        }
+        
+        #GoogleLoginButton {
             background-color: #fff;
             color: #305830;
             border: 2px solid #305830;
-            padding: 10px 20px; /* Adjust padding to match admin-login */
-            text-decoration: none; /* Remove underline */
-            border-radius: 3px;
-            transition: background-color 0.3s;
-            width: calc(100% - 40px); /* Set width same as Google button */
-            display: flex;
-            align-items: center;
-            justify-content: center; /* Center content horizontally */
         }
-
         #GoogleLoginButton:hover {
             background-color: #f0f0f0;
         }
         #GoogleLoginButton i {
             margin-right: 10px;
         }
-
+       
         .admin-login {
+            display: inline-block;
             padding: 10px 20px;
             background-color: #305830;
             color: #fff;
@@ -112,15 +116,11 @@
             text-decoration: none;
             transition: background-color 0.3s;
             margin-bottom: 10px; 
-             width: calc(100% - 40px); /* Adjust width to fit three buttons */
         }
 
         .admin-login:hover {
             background-color: #284d29;
         }
-
-        /* Adjust other button styles if necessary */
-
     </style>
 
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
@@ -138,19 +138,14 @@
                 <asp:TextBox ID="pwtxt" runat="server" TextMode="Password" placeholder="Password"></asp:TextBox>
             </div>
             <div class="form-group">
+                
                 <div class="g-recaptcha" data-sitekey="6Lei1MIpAAAAAHC3x-MbL_l5LgSYVKyrwY3j25yc"></div>
             </div>
             <div class="form-group">
                 <asp:Button ID="loginbtn" runat="server" Text="Login" CssClass="loginbtn" OnClick="Button1_Click" />
                 <asp:Button ID="clearbtn" runat="server" OnClick="Button1_Click1" Text="Clear" />
                 <asp:Button ID="cancelbtn" runat="server" OnClick="Button2_Click" Text="Cancel" />
-            </div>
-            <div class="form-group">
-                <a id="GoogleLoginButton" href="#">
-                    <i class="fab fa-google"></i> Sign in with Google
-                </a>
-            </div>
-            <div class="form-group">
+                <asp:Button ID="Button1" runat="server" Text="Sign in with Google" OnClick="GoogleLoginButton_Click" />
                 <asp:HyperLink ID="HyperLinkAdminLogin" runat="server" NavigateUrl="~/adminlogin.aspx" CssClass="admin-login" Text="Admin as Login" />
             </div>
             <div class="form-group">
