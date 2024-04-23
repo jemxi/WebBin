@@ -1,4 +1,4 @@
-<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="update.aspx.cs" Inherits="WebApplication1.update" %>
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="updates.aspx.cs" Inherits="WebApplication1.updates" %>
 
 <!DOCTYPE html>
 
@@ -76,10 +76,31 @@
         }
 
         footer {
+            position: fixed; 
+            bottom: 0;
+            left: 0;
+            width: 100%; 
             background-color: #305830;
             color: #fff;
             padding: 20px;
             text-align: center;
+        }
+        /*.container {
+            display: flex;
+            flex-direction: column; 
+            align-items: center; 
+        }*/
+        .btn {
+             border-style: none;
+             border-color: inherit;
+             border-width: medium;
+             padding: 10px;
+             background-color: #305830;
+             color: #fff;
+             cursor: pointer;
+             border-radius: 3px;
+             outline: none;
+             width:  calc(20% - 5px);
         }
 
     </style>
@@ -111,7 +132,10 @@
                     <label for="content">CONTENT:</label>
                     <asp:TextBox ID="txtContent" runat="server" CssClass="form-control" TextMode="MultiLine" Rows="5" required></asp:TextBox>
                 </div>
-                <asp:Button ID="btnPost" runat="server" Text="Post" CssClass="btn btn-primary" OnClick="btnPost_Click" />
+                
+            </div>
+            <div class="btn">
+                 <asp:Button ID="Button1" runat="server" Text="Post" CssClass="btn btn-primary" OnClick="btnPost_Click" />
             </div>
         </main>
         <footer>
