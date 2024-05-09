@@ -1,0 +1,26 @@
+
+  protected void GoogleLoginButton_Click(object sender, EventArgs e)
+  {
+      Response.Redirect(GetGoogleAuthenticationUrl());
+  }
+
+  private string GetGoogleAuthenticationUrl()
+  {
+      string clientId = "702979049352-2frh4i6gvphgr4o2cagddc56tdreomch.apps.googleusercontent.com";
+      string redirectUri = "https://localhost:44329/submitreport.aspx";
+      string scope = "email profile openid";
+
+      string url = $"https://accounts.google.com/o/oauth2/auth?" +
+                   $"client_id={clientId}&" +
+                   $"redirect_uri={redirectUri}&" +
+                   $"scope={scope}&" +
+                   $"response_type=code";
+
+      return url;
+  }
+
+  protected void GoogleLoginButton_Click(object sender, ImageClickEventArgs e)
+  {
+      // Redirect to Google authentication URL
+      Response.Redirect(GetGoogleAuthenticationUrl());
+  }
