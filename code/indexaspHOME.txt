@@ -1,121 +1,157 @@
-<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="index.aspx.cs" Inherits="BinWeb.index" %>
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="index.aspx.cs" Inherits="WebApplication1.index" %>
 
 <!DOCTYPE html>
 
-<html lang="en">
-<head runat="server">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Home Page - EcoCollect</title>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Submit Report</title>
+    <title>Document</title>
+    
+    
     <style>
-        body {
+        *{
             margin: 0;
             padding: 0;
-            font-family: Arial, sans-serif;
-            background-color: #f2f2f2;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
         }
-
-        header {
-            background-color: #305830;
-            color: #fff;
-            padding: 20px;
-            text-align: center;
-        }
-
-        header h1 {
-            margin: 0;
-        }
-
-        .navbar {
-            background-color: #305830;
-            color: #fff;
-            padding: 10px;
-            text-align: center;
-        }
-
-        .navbar a {
-            color: #fff;
-            text-decoration: none;
-            padding: 10px;
-        }
-
-        main {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            margin: 20px auto;
-            max-width: 800px;
-        }
-
-        label {
-            font-weight: bold;
-        }
-
-        input[type="text"],
-        textarea {
+        .hero{
             width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
+            min-height: 100vh;
+            background-image: url('back-image.png');
+            background-position: center;
+            background-size: cover;
+            padding: 10px 15%; 
+            overflow: hidden;
         }
-
-        button[type="submit"] {
-            background-color: #305830;
+        
+        nav{
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 10px 8%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: rgba(255, 255, 255, 0.9);
+            z-index: 1000;
+            transition: background-color 0.3s ease; 
+        }
+        .logo{
+            width: 200px; 
+        }
+        nav ul{
+            display: flex;
+            list-style: none;
+            margin-right: 8%; 
+        }
+        nav ul li{
+            margin: 0 15px;
+        }
+        nav ul li a{
+            text-decoration: none;
+            color: #333;
+            font-weight: 400;
+            transition: color 0.3s ease; 
+        }
+        nav ul li a:hover {
+            color: #00ff21; 
+        }
+        .login-btn{
+            text-decoration: none;
+            color: #333;
+            margin-right: 15px;
+            font-weight: 400;
+            transition: color 0.3s ease; 
+        }
+        .login-btn:hover {
+            color: #00ff21; 
+        }
+        .btn{
+            display: inline-block;
+            text-decoration: none;
+            padding: 14px 40px;
             color: #fff;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
+            background-image: linear-gradient(45deg, #305830, #4cff00); 
+            font-size: 14px;
+            border-radius: 30px;
+            border-top-right-radius: 0;
+            transition: 0.5s;
         }
-
-        button[type="submit"]:hover {
-            background-color: #284d29;
+        .btn:hover{
+            border-top-right-radius: 30px;
+            transform: translateY(-3px); 
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); 
+        }
+        .content{
+            margin-top: 20%; 
+            max-width: 600px;
+        }
+        .content h1{
+            font-size: 70px;
+            color: #33be4f;
+        }
+        .content p{
+            margin: 10px 0 30px;
+            color: #333;
+            animation-delay: 0.5s;
+        }
+        .content .btn{
+            padding: 15px 80px;
+            font-size: 16px;
+            animation-delay: 1s;
+        }
+        .btn:hover{
+            border-top-right-radius: 30px;
+        }
+        .feature-img{
+            width: 530px;
+            position: absolute;
+            bottom: 0;
+            right: 10%;
+        }
+        .feature-img.anim{
+            animation-delay: 1.5s;
+        }
+        .anim{
+            opacity: 0;
+            transform: translateY(30px);
+            animation: moveup 0.5s linear forwards;
+        }
+        @keyframes moveup{
+            100%{
+                opacity: 1;
+                transform: translateY(0px);
+            }
         }
     </style>
 </head>
 <body>
-    <form id="form1" runat="server">
-        <header>
-            <h1>WebBin EcoCollect</h1>
-        </header>
-        <nav class="navbar" id="navbar">
-    <asp:HyperLink ID="linkHome" runat="server" NavigateUrl="~/index.aspx" Text="Home" />
-    <asp:HyperLink ID="linkUpdates" runat="server" NavigateUrl="#" Text="Updates" />
-    <asp:HyperLink ID="linkSchedule" runat="server" NavigateUrl="~/schedule.aspx" Text="Schedule" />
-    <asp:HyperLink ID="linkSubmitReport" runat="server" NavigateUrl="~/submitreport.aspx" Text="Submit Reports" />
-    <asp:HyperLink ID="linkAboutUs" runat="server" NavigateUrl="~/aboutus.aspx" Text="About us" />
-    <asp:HyperLink ID="linkLogOut" runat="server" NavigateUrl="#" Text="Log Out" />
-</nav>
-
-        <div class="content">
-            <h2>Pogi si Cee Jay</h2>
-            <p>Better Solutions For The Waste Around You! Keep our Environment Healthy</p>
-      
-            <div class="video-container">
-                <iframe width="560" height="315" src="https://www.youtube.com/embed/uCDOm4AcPQk?si=XelR2BL4MXP0domm" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                <iframe width="560" height="315" src="https://www.youtube.com/embed/6f6obJm_lG4?si=361jlXueRX1Xoymn" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-            </div>
-
-            <h3>Why Recycling is Important</h3>
-            <p>Recycling is important for several reasons, and its significance extends beyond just waste management. Here are some key reasons why recycling is important:</p>
-            <ul>
-                <li>Conservation of Resources</li>
-                <li>Reduction of Landfill Waste</li>
-                <li>Energy Savings</li>
-                <li>Reduction of Pollution</li>
-                <li>Conservation of Habitat</li>
-                <li>Creation of Jobs</li>
-                <li>Promotion of Sustainability</li>
-                <li>Preservation of Biodiversity</li>
-            </ul>
-            <p>Overall, recycling plays a crucial role in environmental protection, resource conservation, and sustainable development, making it an essential practice for individuals, communities, and societies worldwide.</p>
+    <div class="hero">
+    <nav>
+        <img src="file.png" class="logo"> 
+        <ul>
+            <li><a href="index.aspx">Home</a></li>
+            <li><a href="featured.aspx">Featured</a></li>
+            <li><a href="aboutus.aspx">About us</a></li>
+        </ul>
+        <div>
+            <a href="WebForm1.aspx" class="login-btn">Sign in</a>
+            <a href class="btn">Login as Admin</a>
         </div>
-        <footer>
-            <p>&copy; 2024 WebBin EcoCollect. All rights reserved.</p>
-        </footer>
-    </form>
+    </nav>
+    <div class="content">
+       <br><br> <h1 class="anim">WeBin EcoCollect</h1>
+        <p class="anim">Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores placeat ab saepe exercitationem consequuntur illum voluptatibus error aut possimus libero velit perferendis eaque in ratione dolore, sunt modi repudiandae laborum!
+            <a href="WebForm1.aspx" class="btn anim">Get Started</a>
+        </p>
+    </div>
+    <img src="basuram.png" class="feature-img anim">
+
+</div>
 </body>
 </html>
