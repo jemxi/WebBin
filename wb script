@@ -1,0 +1,36 @@
+  
+    <script>
+        // Callback function for reCAPTCHA
+        function onRecaptchaSuccess(response) {
+            document.getElementById('recaptchaChecked').value = response;
+        }
+
+        const container = document.getElementById('main-container');
+        const registerBtn = document.getElementById('register');
+        const loginBtn = document.getElementById('login');
+
+        registerBtn.addEventListener('click', () => {
+            container.classList.add("active");
+        });
+
+        loginBtn.addEventListener('click', () => {
+            container.classList.remove("active");
+        });
+
+        // Form submission handling
+        document.getElementById('signInForm').addEventListener('submit', function (event) {
+            // Check if reCAPTCHA response is available
+            if (!document.getElementById('recaptchaChecked').value) {
+                // Prevent form submission
+                event.preventDefault();
+                alert('Please complete the CAPTCHA');
+            }
+        });
+
+        // Initialize reCAPTCHA
+        grecaptcha.ready(function () {
+            grecaptcha.execute('Your_recaptcha_site_key', { action: 'submit' }).then(function (token) {
+                onRecaptchaSuccess(token);
+            });
+        });
+    </script>
