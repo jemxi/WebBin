@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Home Page - EcoCollect</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+       
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        .hero{
+            width: 100%;
+            min-height: 100vh;
+            background-position: center;
+            background-size: cover;
+            padding: 10px 15%; 
+            overflow: hidden;
+        }
+        
+        nav{
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 10px 8%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: rgba(255, 255, 255, 0.9);
+            z-index: 1000;
+            transition: background-color 0.3s ease; 
+        }
+        .logo{
+            width: 200px; 
+        }
+        nav ul{
+            display: flex;
+            list-style: none;
+            margin-right: 8%; 
+        }
+        nav ul li{
+            margin: 0 15px;
+        }
+        nav ul li a{
+            text-decoration: none;
+            color: #333;
+            font-weight: 400;
+            transition: color 0.3s ease; 
+        }
+
+       nav ul li a[href="index.aspx"] {
+    position: relative; 
+    color: #333; 
+    text-decoration: none; 
+}
+
+nav ul li a[href="index.aspx"]::after {
+    content: ""; 
+    position: absolute; 
+    left: 0;
+    bottom: -3px; 
+    width: 100%; 
+    height: 2px; 
+    background-color: #00ff21; 
+}
+
+
+
+
+        nav ul li a:hover {
+            color: #00ff21; 
+        }
+        .login-btn{
+            text-decoration: none;
+            color: #333;
+            margin-right: 15px;
+            font-weight: 400;
+            transition: color 0.3s ease; 
+        }
+        .login-btn:hover {
+            color: #00ff21; 
+        }
+        .btn{
+            display: inline-block;
+            text-decoration: none;
+            padding: 14px 40px;
+            color: #fff;
+            background-image: linear-gradient(45deg, #305830, #4cff00); 
+            font-size: 14px;
+            border-radius: 30px;
+            border-top-right-radius: 0;
+            transition: 0.5s;
+        }
+        .btn:hover{
+            border-top-right-radius: 30px;
+            transform: translateY(-3px); 
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); 
+        }
+        .content{
+            margin-top: 20%; 
+            max-width: 600px;
+        }
+        .content h1{
+            font-size: 70px;
+            color: #33be4f;
+        }
+        .content p{
+            margin: 10px 0 30px;
+            color: #333;
+            animation-delay: 0.5s;
+        }
+        .content .btn{
+            padding: 15px 80px;
+            font-size: 16px;
+            animation-delay: 1s;
+        }
+        .btn:hover{
+            border-top-right-radius: 30px;
+        }
+        .feature-img{
+            width: 530px;
+            position: absolute;
+            bottom: 0;
+            right: 10%;
+        }
+        .feature-img.anim{
+            animation-delay: 1.5s;
+        }
+        .anim{
+            opacity: 0;
+            transform: translateY(30px);
+            animation: moveup 0.5s linear forwards;
+        }
+        @keyframes moveup{
+            100%{
+                opacity: 1;
+                transform: translateY(0px);
+            }
+        }
+       
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <nav>
+            <img src="ogoll.png" class="logo"> 
+           <ul>
+    <li><a href="index.aspx" class="active">Home</a></li>
+    <li><a href="featured.aspx">Featured</a></li>
+    <li><a href="aboutus.aspx">About Us</a></li>
+</ul>
+
+            <div>
+                <a href="createacc.aspx" class="login-btn">Sign in</a>
+                <a href class="btn">Login as Admin</a>
+            </div>
+        </nav>
+        <div class="content">
+            <br><br> <h1 class="anim">WeBin EcoCollect</h1>
+            <p class="anim">Smart Waste Management System with IoT-enabled Segregation with Fill-level Sensor for Optimized Waste Collection, Bin Locator, Route Optimization, and Integrated Mapping.
+               <br> <a href="createacc.aspx" class="btn anim">Get Started</a>
+            </p>
+        </div>
+        <img src="tb2.png" class="feature-img anim">
+    </div>
+
+     <footer>
+        <p>&copy; 2024 EcoCollect. All rights reserved.</p>
+    </footer>
+   
+
+</body>
+</html>
