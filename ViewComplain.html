@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Complain</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* General styles for the body */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #305830;
+            margin: 0;
+            padding: 0;
+            
+        }
+
+        /* Styles for the complain container */
+        .complain-container {
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 20px;
+            border: 10px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Styles for form elements */
+        form {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 1px;
+            font-weight: bold;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 10px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #305830;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #305830;
+        }
+
+        /* Styles for displaying complain details */
+        .complain-details {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+        }
+
+        .complain-details p {
+            margin: 5px 0;
+        }
+
+        .complain-details p strong {
+            display: inline-block;
+            width: 100px;
+        }
+        /* Styles for error message */ .error { color: red; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="complain-container">
+        <h2>View Complain</h2>
+        <form id="complain-form">
+            <label for="complain-id">Complain ID:</label>
+            <input type="text" id="complain-id" name="complain-id" required>
+
+            <button type="submit">View</button>
+        </form>
+
+        <!-- Placeholder for displaying complain details -->
+        <div class="complain-details" id="complain-details">
+            <!-- Complain details will be displayed here -->
+        </div>
+    </div>
+
+<script>   document.getElementById('complain-form').addEventListener('submit', function(event) { event.preventDefault();
+    
+     const complainId = document.getElementById('complain-id').value; 
+     const complainDetailsDiv = document.getElementById('complain-details'); 
+    
+    // Sample data: list of valid complain IDs const validComplainIds = ['123', '456', '789']; // Replace with real data or a fetch request 
+    
+   // Check if the entered ID is valid
+            if (!validComplainIds.includes(complainId)) {
+                complainDetailsDiv.innerHTML = <p class="error">Invalid Complain ID. Please try again.</p>;
+                return;
+            }
+
+            // Placeholder for fetching complain details
+            // This would typically be a fetch request to your backend API
+            // For example: fetch(/api/complain/${complainId})
+            // Here, we'll simulate with a static response
+
+            const sampleComplainDetails = {
+                id: 123,
+                status: 'Collected',
+                description: 'Thank you for your response.',
+                date: '2024-05-15'
+            };
+
+            // Displaying the fetched complain details
+            complainDetailsDiv.innerHTML = `
+                <p><strong>ID:</strong> ${sampleComplainDetails.id}</p>
+                <p><strong>Status:</strong> ${sampleComplainDetails.status}</p>
+                <p><strong>Description:</strong> ${sampleComplainDetails.description}</p>
+                <p><strong>Date:</strong> ${sampleComplainDetails.date}</p>
+            `;
+        });
+    </script>
+</body>
+</html>
