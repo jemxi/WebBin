@@ -150,7 +150,7 @@ nav ul li a[href="index.aspx"]::after {
             <img src="ogoll.png" class="logo"> 
            <ul>
     <li><a href="index.aspx" class="active">Home</a></li>
-    <li><a href="featured.aspx">Featured</a></li>
+    <li><a href="featured.aspx">Features</a></li>
     <li><a href="aboutus.aspx">About Us</a></li>
 </ul>
 
