@@ -230,7 +230,7 @@ nav ul li a:hover {
         <ul>
             <li><a href="aboutus.aspx ">About Us</a></li>
             <li><a href="index.aspx">Home</a></li>
-            <li><a href="featured.aspx">Featured</a></li>
+            <li><a href="featured.aspx">Features</a></li>
         </ul>
         <div class="login-container">
             <a href="WebForm1.aspx" class="login-btn">Sign in</a>
