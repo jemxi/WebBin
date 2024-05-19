@@ -331,7 +331,7 @@
         </ul>
         <div class="login-container">
             <a href="WebForm1.aspx" class="login-btn">Sign in</a>
-            <br><a href="#" class="login-btn">Login</a>
+            <br><a href="#" class="login-btn">Login as Admin</a>
         </div>
     </nav>
 
