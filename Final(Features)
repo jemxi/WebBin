@@ -356,17 +356,40 @@
                 <h3>Waste Tracking</h3>
                 <p>Monitor and track your waste production with our easy-to-use app.</p>
             </div>
+
             <div class="service">
                 <h3>Recycling Tips</h3>
                 <p>Get practical tips on how to properly recycle different types of waste.</p>
             </div>
+
+            <div class="service">
+            <h3>IoT-enabled Segregation with Fill-level Sensor for Optimized Waste Collection</h3>
+            <p>Join community-driven initiatives to promote sustainability in your area.</p>
+            </div>
+
+            <div class="service">
+            <h3>Bin Locator</h3>
+            <p>Join community-driven initiatives to promote sustainability in your area.</p>
+            </div>
+
+             <div class="service">
+             <h3>Route Optimization</h3>
+             <p>Join community-driven initiatives to promote sustainability in your area.</p>
+             </div>
+
+             <div class="service">
+             <h3>Integrated Mapping</h3>
+             <p>Join community-driven initiatives to promote sustainability in your area.</p>
+             </div>
+
             <div class="service">
                 <h3>Community Initiatives</h3>
                 <p>Join community-driven initiatives to promote sustainability in your area.</p>
             </div>
+
             <div class="service">
-    <h3>Key reasons why recycling is important</h3>
-    <ul>
+            <h3>Key reasons why recycling is important</h3>
+            <ul>
             <li>Conservation of Resources</li>
             <li>Reduction of Landfill Waste</li>
             <li>Energy Savings</li>
