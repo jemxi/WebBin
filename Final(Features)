@@ -17,7 +17,6 @@
             background-color: #fff;
             color: #333;
             line-height: 1.6;
-            padding-top: 80px;
         }
 
         nav {
