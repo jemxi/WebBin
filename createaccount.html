@@ -1,0 +1,250 @@
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="createacc.aspx.cs" Inherits="WebApplication1.createacc" %>
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>Create Account</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #305830;
+            margin: 0;
+            padding: 0;
+            color: #305830;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            position: relative;
+        }
+        #createacc-container {
+            width: 320px;
+            background-color: #fff;
+            border-radius: 5px;
+            padding: 20px;
+            box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        #createacc-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+            text-align: center;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #305830;
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        .form-group input[type="text"],
+        .form-group input[type="password"] {
+            width: 100%;
+            padding: 10px 10px 10px 40px;
+            border: 2px solid #ccc;
+            border-radius: 20px;
+            outline: none;
+            border-color: #305830;
+            transition: border-color 0.3s, transform 0.3s;
+            box-sizing: border-box;
+        }
+        .form-group input[type="text"]:hover,
+        .form-group input[type="password"]:hover {
+            transform: scale(1.05);
+        }
+        .form-group input[type="text"]:focus,
+        .form-group input[type="password"]:focus {
+            border-color: #305830;
+            transform: scale(1.1);
+        }
+        .form-group input[type="submit"],
+        .form-group button {
+            border-style: none;
+            border-color: inherit;
+            border-width: medium;
+            padding: 10px;
+            background-color: #305830;
+            color: #fff;
+            cursor: pointer;
+            border-radius: 3px;
+            outline: none;
+            width: calc(33.33% - 5px);
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        .form-group input[type="submit"]:hover,
+        .form-group button:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+        .form-group input[type="submit"]:active,
+        .form-group button:active {
+            transform: scale(0.95);
+        }
+        .form-group #Label1,
+        .form-group #HyperLink1 {
+            display: block;
+            font-size: 20px;
+            margin: 10px auto;
+            color: #305830;
+        }
+        .form-group #HyperLink1:hover {
+            color: #0056b3;
+        }
+        .GoogleButton {
+            display: block;
+            text-align: center;
+            width: 100%;
+            margin: 10px auto 0;
+            margin-top: -10px;
+        }
+        .GoogleButton button {
+            background-color: transparent;
+            color: #305830;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            border-radius: 3px;
+            transition: background-color 0.3s, transform 0.3s;
+            margin-top: -10px;
+        }
+        .GoogleButton button:hover {
+            background-color: #f0f0f0;
+            transform: scale(1.05);
+        }
+        .GoogleButton button:active {
+            transform: scale(0.95);
+        }
+        .GoogleButton i {
+            margin-right: 10px;
+        }
+        .admin-login {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #305830;
+            color: #fff;
+            border: 2px solid #305830;
+            border-radius: 3px;
+            text-decoration: none;
+            transition: background-color 0.3s, transform 0.3s;
+            margin-bottom: 5px;
+            width: calc(100% - 40px);
+            margin-top: 5px;
+        }
+        .admin-login:hover {
+            background-color: #284d29;
+            transform: scale(1.05);
+        }
+        .admin-login:active {
+            transform: scale(0.95);
+        }
+        #createaccbtn,
+        #clearbtn,
+        #cancelbtn {
+            border-style: none;
+            border-color: inherit;
+            border-width: medium;
+            padding: 10px;
+            background-color: #305830;
+            color: #fff;
+            cursor: pointer;
+            border-radius: 3px;
+            outline: none;
+            width: calc(33.33% - 5px);
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        #createaccbtn:hover,
+        #clearbtn:hover,
+        #cancelbtn:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+        #createaccbtn:active,
+        #clearbtn:active,
+        #cancelbtn:active {
+            transform: scale(0.95);
+        }
+        #notification {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #ff0000;
+            color: #ffffff;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            z-index: 9999;
+        }
+        #successLabel,
+        #passwordRequirementLabel {
+            display: block;
+            font-size: 14px;
+            color: red;
+            margin-top: 5px;
+            text-align: center;
+        }
+    </style>
+
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <script>
+        function verifyCaptcha() {
+            var response = grecaptcha.getResponse();
+            if (response.length === 0) {
+                document.getElementById("notification").style.display = "block";
+                setTimeout(function () {
+                    document.getElementById("notification").style.display = "none";
+                }, 3000);
+                return false;
+            }
+            return true;
+        }
+    </script>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <div id="createacc-container">
+            <div id="notification">Please complete the verification</div>
+            <h2>Create Account</h2>
+            <div class="form-group">
+                <label for="usernametxt"><i class="fas fa-user"></i></label>
+                <asp:TextBox ID="usernametxt" runat="server" placeholder="Email"></asp:TextBox>
+            </div>
+            <div class="form-group">
+                <label for="phoneno"><i class="fas fa-phone"></i></label>
+                <asp:TextBox ID="phoneno" runat="server" placeholder="Phone Number"></asp:TextBox>
+            </div>
+            <div class="form-group">
+                <label for="addresstxt"><i class="fas fa-home"></i></label>
+                <asp:TextBox ID="addresstxt" runat="server" placeholder="Address"></asp:TextBox>
+            </div>
+            <div class="form-group">
+                <label for="pwtxt"><i class="fas fa-lock"></i></label>
+                <asp:TextBox ID="pwtxt" runat="server" TextMode="Password" placeholder="Password"></asp:TextBox>
+            </div>
+            <asp:Label ID="passwordRequirementLabel" runat="server" CssClass="passwordRequirementLabel" Visible="false" />
+            <div class="form-group">
+                <div class="g-recaptcha" data-sitekey="6Lei1MIpAAAAAHC3x-MbL_l5LgSYVKyrwY3j25yc"></div>
+            </div>
+            <div class="form-group">
+                <asp:Button ID="createaccbtn" runat="server" Text="Create Account" OnClick="Button1_Click" OnClientClick="return verifyCaptcha();" />
+                <asp:Button ID="clearbtn" runat="server" OnClick="Button1_Click1" Text="Clear" />
+                <asp:Button ID="cancelbtn" runat="server" OnClick="Button2_Click" Text="Cancel" />
+            </div>
+          
+            <div class="form-group">
+                <asp:Label ID="Label1" runat="server" Text="Already have an account?" />
+                <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="~/login.aspx">Login</asp:HyperLink>
+            </div>
+            <asp:Label ID="successLabel" runat="server" CssClass="successLabel" Visible="false" />
+        </div>
+    </form>
+</body>
+</html>
