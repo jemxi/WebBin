@@ -1,0 +1,146 @@
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="adminlogin.aspx.cs" Inherits="WebApplication1.adminlogin" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>Admin Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #305830;
+            margin: 0;
+            padding: 0;
+            color: #305830;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        #login-container {
+            width: 320px;
+            background-color: #fff;
+            border-radius: 5px;
+            padding: 20px;
+            box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+        }
+
+        #login-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #305830;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+            position: relative;
+            text-align: center;
+        }
+
+        .input-group label {
+            display: none; /* Hide label */
+        }
+
+        .input-group input {
+            width: calc(100% - 40px);
+            padding: 10px;
+            border: 2px solid #ccc;
+            border-radius: 20px;
+            outline: none;
+            border-color: #305830;
+            transition: border-color 0.3s, transform 0.3s;
+            box-sizing: border-box;
+            padding-left: 40px; /* Adjust padding to make space for icon */
+        }
+
+        .input-group input:focus {
+            border-color: #305830;
+            transform: scale(1.05);
+        }
+
+        .input-group input:hover {
+            transform: scale(1.02);
+        }
+
+        .input-group .icon {
+            position: absolute;
+            left: 35px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #305830;
+        }
+
+        .button-group {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .button-group .button {
+            margin: 5px;
+            border: none;
+            padding: 10px 20px;
+            background-color: #305830;
+            color: #fff;
+            cursor: pointer;
+            border-radius: 20px;
+            outline: none;
+            transition: background-color 0.3s, transform 0.3s;
+            display: inline-block;
+        }
+
+        .button-group .button:hover {
+            background-color: #2b4d2b;
+            transform: scale(1.05);
+        }
+
+        .button-group .button:active {
+            transform: scale(0.98);
+        }
+
+        /* Button specific styles */
+        #Button1,
+        #clearbtn,
+        #cancelbtn {
+            margin: 5px;
+            border: none;
+            padding: 10px 20px;
+            background-color: #305830;
+            color: #fff;
+            cursor: pointer;
+            border-radius: 20px;
+            outline: none;
+            transition: background-color 0.3s, transform 0.3s;
+            display: inline-block;
+        }
+
+        /* Hover effect */
+        #Button1:hover,
+        #clearbtn:hover,
+        #cancelbtn:hover {
+            background-color: #2b4d2b;
+        }
+    </style>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <div id="login-container">
+            <h2>Admin Log In</h2>
+            <div class="input-group">
+                <i class="fas fa-user icon"></i>
+                <asp:TextBox ID="usernametxt" runat="server" placeholder="Username"></asp:TextBox>
+            </div>
+            <div class="input-group">
+                <i class="fas fa-lock icon"></i>
+                <asp:TextBox ID="passtxt" runat="server" TextMode="Password" placeholder="Password"></asp:TextBox>
+            </div>
+            <div class="button-group">
+                <asp:Button ID="Button1" runat="server" Text="Log In" OnClick="Button1_Click" />
+                <asp:Button ID="clearbtn" runat="server" Text="Clear" OnClick="clearbtn_Click" />
+                <asp:Button ID="cancelbtn" runat="server" Text="Cancel" OnClick="cancelbtn_Click" />
+            </div>
+        </div>
+    </form>
+</body>
+</html>
