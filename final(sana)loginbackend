@@ -1,6 +1,4 @@
 using System;
-using System.Text;
-using System.Security.Cryptography;
 using System.Web.UI;
 using MySql.Data.MySqlClient;
 using BCrypt.Net;
@@ -16,9 +14,8 @@ namespace WebApplication1
 
         protected void Button1_Click(object sender, EventArgs e)
         {
-
             string connectionString = "server=localhost;database=WEC;uid=root;pwd=";
-            string username = usernametxt.Text;
+            string username = MaskUsername(usernametxt.Text);
             string password = pwtxt.Text;
             string recaptchaResponse = Request.Form["g-recaptcha-response"];
 
@@ -30,7 +27,7 @@ namespace WebApplication1
                     ClientScript.RegisterStartupScript(this.GetType(), "loginSuccess", successScript, true);
 
                     ClearTextBoxes();
-                    Response.Redirect("dashboard.aspx");
+                    Response.Redirect("home.aspx");
                 }
                 else
                 {
@@ -51,18 +48,14 @@ namespace WebApplication1
         {
             string hashedPasswordFromDB = GetHashedPassword(connectionString, username);
 
-            // Check if the hashed password from the database is null or empty
-            if (string.IsNullOrEmpty(hashedPasswordFromDB))
+            if (hashedPasswordFromDB == null)
             {
-                // User not found or hashed password is null/empty
                 return false;
             }
 
-            // Verify the password using BCrypt if the hashed password is not null or empty
+            // Compare the stored hashed password with the entered password using bcrypt
             return BCrypt.Net.BCrypt.Verify(password, hashedPasswordFromDB);
         }
-
-
 
         private string GetHashedPassword(string connectionString, string username)
         {
@@ -80,6 +73,14 @@ namespace WebApplication1
                     return result != null ? result.ToString() : null;
                 }
             }
+        }
+
+        private string MaskUsername(string username)
+        {
+            if (string.IsNullOrEmpty(username)) return username;
+
+            int maskLength = Math.Min(3, username.Length - 1);
+            return new string('*', username.Length - maskLength) + username.Substring(username.Length - maskLength);
         }
 
         protected void Button1_Click1(object sender, EventArgs e)
@@ -101,9 +102,7 @@ namespace WebApplication1
 
         private bool IsValidRecaptcha(string recaptchaResponse)
         {
-
             string secretKey = "6Lei1MIpAAAAAJLNM6n4IcEhhPT3bQoEF0yp7bLe";
-
             string apiUrl = $"https://www.google.com/recaptcha/api/siteverify?secret={secretKey}&response={recaptchaResponse}";
 
             using (var client = new System.Net.WebClient())
@@ -114,15 +113,10 @@ namespace WebApplication1
             }
         }
 
-        protected void GoogleLoginButton_Click(object sender, EventArgs e)
-        {
-            Response.Redirect(GetGoogleAuthenticationUrl());
-        }
-
         private string GetGoogleAuthenticationUrl()
         {
             string clientId = "702979049352-2frh4i6gvphgr4o2cagddc56tdreomch.apps.googleusercontent.com";
-            string redirectUri = "https://localhost:44329/dashboard.aspx";
+            string redirectUri = "https://localhost:44329/home";
             string scope = "email profile openid";
 
             string url = $"https://accounts.google.com/o/oauth2/auth?" +
@@ -134,25 +128,9 @@ namespace WebApplication1
             return url;
         }
 
-        protected void GoogleLoginButton_Click(object sender, ImageClickEventArgs e)
+        protected void GoogleLoginButton_Click(object sender, EventArgs e)
         {
-            // Redirect to Google authentication URL
             Response.Redirect(GetGoogleAuthenticationUrl());
-        }
-
-        protected void submitbtn_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        protected void AdminLoginButton_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        protected void Unnamed3_Click(object sender, EventArgs e)
-        {
-
         }
     }
 }
