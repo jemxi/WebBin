@@ -1,0 +1,164 @@
+using System;
+using System.Text;
+using System.Security.Cryptography;
+using System.Web.UI;
+using MySql.Data.MySqlClient;
+
+namespace WebApplication1
+{
+    public partial class WebForm1 : System.Web.UI.Page
+    {
+        protected void Page_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void Button1_Click(object sender, EventArgs e)
+        {
+
+            string connectionString = "server=localhost;database=WEC;uid=root;pwd=";
+            string username = usernametxt.Text;
+            string password = pwtxt.Text;
+            string recaptchaResponse = Request.Form["g-recaptcha-response"];
+
+            if (IsValidRecaptcha(recaptchaResponse))
+            {
+                if (IsValidLogin(connectionString, username, password))
+                {
+                    string successScript = "alert('Login successful!');";
+                    ClientScript.RegisterStartupScript(this.GetType(), "loginSuccess", successScript, true);
+
+                    ClearTextBoxes();
+                    Response.Redirect("dashboard.aspx");
+                }
+                else
+                {
+                    string errorScript = "alert('Invalid username or password!');";
+                    ClientScript.RegisterStartupScript(this.GetType(), "loginError", errorScript, true);
+
+                    ClearTextBoxes();
+                }
+            }
+            else
+            {
+                string errorScript = "alert('Please complete the verification!');";
+                ClientScript.RegisterStartupScript(this.GetType(), "captchaError", errorScript, true);
+            }
+        }
+
+        private bool IsValidLogin(string connectionString, string username, string password)
+        {
+            string hashedPasswordFromDB = GetHashedPassword(connectionString, username);
+            string hashedPassword = HashPassword(password);
+
+            return hashedPassword == hashedPasswordFromDB;
+        }
+
+        private string GetHashedPassword(string connectionString, string username)
+        {
+            string query = "SELECT password FROM login WHERE username = @username";
+
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                using (MySqlCommand command = new MySqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@username", username);
+
+                    connection.Open();
+                    object result = command.ExecuteScalar();
+
+                    return result != null ? result.ToString() : null;
+                }
+            }
+        }
+
+        private string HashPassword(string password)
+        {
+            using (SHA256 sha256Hash = SHA256.Create())
+            {
+                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(password));
+                StringBuilder builder = new StringBuilder();
+
+                for (int i = 0; i < bytes.Length; i++)
+                {
+                    builder.Append(bytes[i].ToString("x2"));
+                }
+
+                return builder.ToString();
+            }
+        }
+
+        protected void Button1_Click1(object sender, EventArgs e)
+        {
+            ClearTextBoxes();
+        }
+
+        private void ClearTextBoxes()
+        {
+            usernametxt.Text = "";
+            pwtxt.Text = "";
+        }
+
+        protected void Button2_Click(object sender, EventArgs e)
+        {
+            string script = "window.close();";
+            ClientScript.RegisterStartupScript(this.GetType(), "closeWindow", script, true);
+        }
+
+        private bool IsValidRecaptcha(string recaptchaResponse)
+        {
+
+            string secretKey = "6Lei1MIpAAAAAJLNM6n4IcEhhPT3bQoEF0yp7bLe";
+
+            string apiUrl = $"https://www.google.com/recaptcha/api/siteverify?secret={secretKey}&response={recaptchaResponse}";
+
+            using (var client = new System.Net.WebClient())
+            {
+                var response = client.DownloadString(apiUrl);
+                dynamic jsonData = Newtonsoft.Json.JsonConvert.DeserializeObject(response);
+                return jsonData.success == "true";
+            }
+        }
+
+        protected void GoogleLoginButton_Click(object sender, EventArgs e)
+        {
+            Response.Redirect(GetGoogleAuthenticationUrl());
+        }
+
+        private string GetGoogleAuthenticationUrl()
+        {
+            string clientId = "702979049352-2frh4i6gvphgr4o2cagddc56tdreomch.apps.googleusercontent.com";
+            string redirectUri = "https://localhost:44329/dashboard.aspx";
+            string scope = "email profile openid";
+
+            string url = $"https://accounts.google.com/o/oauth2/auth?" +
+                         $"client_id={clientId}&" +
+                         $"redirect_uri={redirectUri}&" +
+                         $"scope={scope}&" +
+                         $"response_type=code";
+
+            return url;
+        }
+
+        protected void GoogleLoginButton_Click(object sender, ImageClickEventArgs e)
+        {
+            // Redirect to Google authentication URL
+            Response.Redirect(GetGoogleAuthenticationUrl());
+        }
+
+        protected void submitbtn_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void AdminLoginButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void Unnamed3_Click(object sender, EventArgs e)
+        {
+
+        }
+    }
+}
