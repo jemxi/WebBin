@@ -1,0 +1,7 @@
+<configuration>
+    <system.webServer>
+        <handlers>
+            <add name="HTML" path="*.html" verb="*" type="System.Web.UI.PageHandlerFactory" resourceType="Unspecified" preCondition="integratedMode" />
+        </handlers>
+    </system.webServer>
+</configuration>
