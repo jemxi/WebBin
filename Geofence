@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Geofence</title>
+    <style>
+        #status {
+            margin-top: 10px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div style="max-width:100%;overflow:hidden;color:red;width:500px;height:500px;">
+        <div id="canvas-for-googlemap" style="height:100%; width:100%;max-width:100%;"></div>
+    </div>
+    <div id="status">Checking location...</div>
+    <script>
+        let swRegistration;
+
+        if ('serviceWorker' in navigator && 'PushManager' in window) {
+            navigator.serviceWorker.register('sw.js').then(function(swReg) {
+                console.log('Service Worker is registered', swReg);
+                swRegistration = swReg;
+            }).catch(function(error) {
+                console.error('Service Worker Error', error);
+            });
+        } else {
+            console.warn('Push messaging is not supported');
+        }
+
+        function initMap() {
+            console.log("Initializing map...");
+            var guimba = { lat: 15.661, lng: 120.768 };
+
+            var map = new google.maps.Map(document.getElementById('canvas-for-googlemap'), {
+                zoom: 14,
+                center: guimba
+            });
+
+            var geofenceRadius = 3500;
+
+            var geofences = [
+                { center: { lat: 15.6711, lng: 120.6980 }, color: '#FF0000' }, // Red
+                { center: { lat: 15.6610, lng: 120.8190 }, color: '#0000FF' }, // Blue
+                { center: { lat: 15.589, lng: 120.780 }, color: '#00FF00' }, // Green
+                { center: { lat: 15.743, lng: 120.735 }, color: '#FFFF00' } // Yellow
+            ];
+
+            geofences.forEach(function(geofence) {
+                new google.maps.Circle({
+                    strokeColor: geofence.color,
+                    strokeOpacity: 0.8,
+                    strokeWeight: 2,
+                    fillColor: geofence.color,
+                    fillOpacity: 0.35,
+                    map: map,
+                    center: geofence.center,
+                    radius: geofenceRadius
+                });
+            });
+
+            var userMarker = new google.maps.Marker({
+                map: map,
+                title: "User Location"
+            });
+
+            function checkGeofence(userLocation, geofenceCenter, radius) {
+                var distance = google.maps.geometry.spherical.computeDistanceBetween(
+                    new google.maps.LatLng(userLocation),
+                    new google.maps.LatLng(geofenceCenter)
+                );
+                return distance <= radius;
+            }
+
+            function updateUserLocation(position) {
+                console.log("Location retrieved:", position);
+                var userLocation = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude
+                };
+
+                userMarker.setPosition(userLocation);
+                map.setCenter(userLocation);
+
+                var isInGeofence = geofences.some(function(geofence) {
+                    return checkGeofence(userLocation, geofence.center, geofenceRadius);
+                });
+
+                var status = document.getElementById('status');
+                if (isInGeofence) {
+                    status.textContent = "User is inside the geofence";
+                    status.style.color = 'green';
+                } else {
+                    status.textContent = "User is outside the geofence";
+                    status.style.color = 'red';
+                    sendNotification();
+                }
+            }
+
+            function handleLocationError(error) {
+                console.error("Error occurred:", error);
+                var status = document.getElementById('status');
+                switch (error.code) {
+                    case error.PERMISSION_DENIED:
+                        status.textContent = "User denied the request for Geolocation.";
+                        console.log("User denied the request for Geolocation.");
+                        break;
+                    case error.POSITION_UNAVAILABLE:
+                        status.textContent = "Location information is unavailable.";
+                        console.log("Location information is unavailable.");
+                        break;
+                    case error.TIMEOUT:
+                        status.textContent = "The request to get user location timed out.";
+                        console.log("The request to get user location timed out.");
+                        break;
+                    case error.UNKNOWN_ERROR:
+                        status.textContent = "An unknown error occurred.";
+                        console.log("An unknown error occurred.");
+                        break;
+                }
+                status.style.color = 'red';
+            }
+
+            function sendNotification() {
+                if (Notification.permission === 'granted') {
+                    console.log("Sending notification...");
+                    navigator.serviceWorker.ready.then(function(registration) {
+                        registration.showNotification('Garbage Truck Alert', {
+                            body: 'The garbage truck will arrive soon, please prepare your wastes if you have for faster transaction.',
+                            icon: 'icon.png',
+                            badge: 'badge.png'
+                        });
+                    });
+                } else if (Notification.permission !== 'denied') {
+                    Notification.requestPermission().then(function(permission) {
+                        if (permission === 'granted') {
+                            sendNotification();
+                        }
+                    });
+                } else {
+                    console.log("Notification permission not granted.");
+                    alert('The garbage truck will arrive soon, please prepare your wastes if you have for faster transaction.');
+                }
+            }
+
+            if (navigator.geolocation) {
+                console.log("Requesting user location...");
+                navigator.geolocation.getCurrentPosition(updateUserLocation, handleLocationError);
+            } else {
+                var status = document.getElementById('status');
+                status.textContent = "Geolocation is not supported by this browser.";
+                status.style.color = 'red';
+                console.error("Geolocation is not supported by this browser.");
+            }
+        }
+
+        function requestNotificationPermission() {
+            if ('Notification' in window && navigator.serviceWorker) {
+                Notification.requestPermission().then(function(result) {
+                    if (result === 'granted') {
+                        console.log("Notification permission granted.");
+                    } else {
+                        console.log("Notification permission denied.");
+                    }
+                });
+            }
+        }
+
+        window.onload = function() {
+            requestNotificationPermission();
+            initMap();
+        };
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&libraries=geometry"></script>
+</body>
+</html>
