@@ -44,7 +44,6 @@
         border-radius: 5px;
         box-sizing: border-box;
         font-size: 16px;
-        text: bold;
     }
     .login-form input[type="submit"] {
         width: 100%;
@@ -60,7 +59,11 @@
     .login-form input[type="submit"]:hover {
         background-color: #77DD77; 
     }
-    
+    .error-message {
+        color: red;
+        font-size: 14px;
+        display: none;
+    }
 </style>
 </head>
 <body>
@@ -70,12 +73,17 @@
     <div class="login-form">
         <form id="login-form" class="login-form">
             <input type="text" name="username" placeholder="Username" required>
+            <div class="error-message" id="username-error">Username is required</div>
             <input type="text" name="email" placeholder="Email Address" required>
+            <div class="error-message" id="email-error">Email is required</div>
             <input type="password" name="password" placeholder="Password" required>
+            <div class="error-message" id="password-error">Password is required</div>
             <select name="role" required>
+                <option value="">Select Role</option>
                 <option value="user">User</option>
                 <option value="admin">Admin</option>
             </select>
+            <div class="error-message" id="role-error">Role is required</div>
             <input type="submit" value="Login">
         </form>
         <a href="createaccount.html">Don't have an account? Click here to create an account</a>
@@ -86,17 +94,43 @@
     document.getElementById('login-form').addEventListener('submit', function(event) {
         event.preventDefault();
         var formData = new FormData(this);
+        var isValid = true;
+
         var username = formData.get('username');
         var email = formData.get('email');
         var password = formData.get('password');
         var role = formData.get('role');
 
-        if (role === 'user') {
-          
-            alert('User login functionality not implemented yet.');
-        } else if (role === 'admin') {
-         
-            alert('Admin login functionality not implemented yet.');
+        // dito ma clear na agad
+        document.getElementById('username-error').style.display = 'none';
+        document.getElementById('email-error').style.display = 'none';
+        document.getElementById('password-error').style.display = 'none';
+        document.getElementById('role-error').style.display = 'none';
+
+       // dito yung sa validation field
+        if (!username) {
+            document.getElementById('username-error').style.display = 'block';
+            isValid = false;
+        }
+        if (!email) {
+            document.getElementById('email-error').style.display = 'block';
+            isValid = false;
+        }
+        if (!password) {
+            document.getElementById('password-error').style.display = 'block';
+            isValid = false;
+        }
+        if (!role) {
+            document.getElementById('role-error').style.display = 'block';
+            isValid = false;
+        }
+
+        if (isValid) {
+            if (role === 'user') {
+                alert('User login functionality not implemented yet.');
+            } else if (role === 'admin') {
+                alert('Admin login functionality not implemented yet.');
+            }
         }
     });
 </script>
