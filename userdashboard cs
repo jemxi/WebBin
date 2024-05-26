@@ -12,6 +12,7 @@ namespace WebApplication1
             if (!IsPostBack)
             {
                 BindComplaints();
+                DisplayComplaintsCount();
             }
         }
 
@@ -40,6 +41,29 @@ namespace WebApplication1
                         ComplaintsRepeater.DataSource = dt;
                         ComplaintsRepeater.DataBind();
                     }
+                }
+            }
+        }
+        private void DisplayComplaintsCount()
+        {
+            // Construct your connection string
+            string connectionString = "server=localhost;database=WEC;uid=root;pwd=";
+
+            // Construct your SQL query to get the count of complaints
+            string query = "SELECT COUNT(*) FROM complaints";
+
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                using (MySqlCommand command = new MySqlCommand(query, connection))
+                {
+                    // Open connection
+                    connection.Open();
+
+                    // Execute the command and get the count
+                    int count = Convert.ToInt32(command.ExecuteScalar());
+
+                    // Assign the count to the ComplaintsCount literal control
+                    ComplaintsCount.Text = count.ToString();
                 }
             }
         }
