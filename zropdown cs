@@ -1,0 +1,182 @@
+using System;
+using System.Text.RegularExpressions;
+using System.Web.UI;
+using MySql.Data.MySqlClient;
+using BCrypt.Net;
+using Org.BouncyCastle.Crypto.Generators;
+using System.Web.UI.WebControls;
+
+namespace WebApplication1
+{
+    public partial class createacc : Page
+    {
+        string connectionString = "server=localhost;database=WEC;uid=root;pwd=";
+
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            if (!IsPostBack)
+            {
+
+                addressDropdown.Items.Add(new ListItem("Agcano", "Agcano"));
+                addressDropdown.Items.Add(new ListItem("Ayos Lomboy", "Ayos Lomboy"));
+                addressDropdown.Items.Add(new ListItem("Bacayao", "Bacayao"));
+
+
+            }
+        
+        }
+
+
+        protected void Button1_Click(object sender, EventArgs e)
+        {
+            string username = usernametxt.Text;
+            string phoneNumber = phoneno.Text;
+            string password = pwtxt.Text;
+            string address = addressDropdown.SelectedValue; 
+
+            if (!IsCaptchaVerified())
+            {
+                successLabel.Text = "Please verify reCAPTCHA!";
+                successLabel.ForeColor = System.Drawing.Color.Red;
+                successLabel.Visible = true;
+                return;
+            }
+
+            showPasswordPopup();
+
+            if (passwordRequirementLabel.Visible)
+            {
+                return;
+            }
+
+            string maskedUsername = MaskData(username);
+            string maskedPhoneNumber = MaskData(phoneNumber);
+            string maskedAddress = MaskData(address);
+
+            InsertUser(maskedUsername, maskedPhoneNumber, maskedAddress, password);
+
+            ClearTextBoxes();
+        }
+
+        private void InsertUser(string username, string phoneNumber, string address, string password)
+        {
+            if (UsernameExists(username))
+            {
+                successLabel.Text = "Account already exists!";
+                successLabel.ForeColor = System.Drawing.Color.Red;
+                successLabel.Visible = true;
+                return;
+            }
+
+            string hashedPassword = HashPassword(password);
+
+            string query = "INSERT INTO login (username, password, phoneno, address) VALUES (@username, @password, @phoneno, @address)";
+
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                using (MySqlCommand command = new MySqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@username", username);
+                    command.Parameters.AddWithValue("@phoneno", phoneNumber);
+                    command.Parameters.AddWithValue("@address", address);
+                    command.Parameters.AddWithValue("@password", hashedPassword);
+
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                }
+            }
+
+            successLabel.Text = "Account created successfully! Redirecting to the next form...";
+            successLabel.ForeColor = System.Drawing.Color.Green;
+            successLabel.Visible = true;
+
+            Response.AddHeader("REFRESH", "2;URL=WebForm1.aspx");
+        }
+
+        private string HashPassword(string password)
+        {
+            return BCrypt.Net.BCrypt.HashPassword(password);
+        }
+
+        private bool UsernameExists(string username)
+        {
+            string query = "SELECT COUNT(*) FROM login WHERE username = @username";
+
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                using (MySqlCommand command = new MySqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@username", username);
+
+                    connection.Open();
+                    int count = Convert.ToInt32(command.ExecuteScalar());
+
+                    return count > 0;
+                }
+            }
+        }
+
+        protected void Button1_Click1(object sender, EventArgs e)
+        {
+            ClearTextBoxes();
+        }
+
+        private void ClearTextBoxes()
+        {
+            usernametxt.Text = "";
+            pwtxt.Text = "";
+            phoneno.Text = "";
+            addressDropdown.ClearSelection(); // Clear selection for the dropdown list
+        }
+
+        private void showPasswordPopup()
+        {
+            string password = pwtxt.Text;
+            var uppercaseRegex = new Regex("[A-Z]");
+            var lowercaseRegex = new Regex("[a-z]");
+            var numberRegex = new Regex("[0-9]");
+            var specialCharacterRegex = new Regex("[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?]+");
+
+            var isValid = true;
+            if (!uppercaseRegex.IsMatch(password) || !lowercaseRegex.IsMatch(password) || !numberRegex.IsMatch(password) || !specialCharacterRegex.IsMatch(password))
+            {
+                isValid = false;
+            }
+
+            if (!isValid)
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "showPopup", "showPasswordPopup();", true);
+            }
+            else
+            {
+                passwordRequirementLabel.Visible = false;
+            }
+        }
+
+        private string MaskData(string data)
+        {
+            if (string.IsNullOrEmpty(data)) return data;
+
+            int maskLength = Math.Min(3, data.Length - 1);
+            return new string('*', data.Length - maskLength) + data.Substring(data.Length - maskLength);
+        }
+
+        private bool IsCaptchaVerified()
+        {
+            string captchaResponse = Request.Form["g-recaptcha-response"];
+            if (string.IsNullOrEmpty(captchaResponse))
+            {
+                return false;
+            }
+
+            string secretKey = "6Lei1MIpAAAAAJLNM6n4IcEhhPT3bQoEF0yp7bLe";
+            string apiUrl = $"https://www.google.com/recaptcha/api/siteverify?secret={secretKey}&response={captchaResponse}";
+            using (var wc = new System.Net.WebClient())
+            {
+                var json = wc.DownloadString(apiUrl);
+                dynamic result = Newtonsoft.Json.JsonConvert.DeserializeObject(json);
+                return result.success;
+            }
+        }
+    }
+}
