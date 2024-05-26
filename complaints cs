@@ -2,6 +2,7 @@ using System;
 using System.Data.SqlClient;
 using System.Configuration;
 using System.Web.UI;
+using MySql.Data.MySqlClient; // Changed namespace to MySql.Data.MySqlClient
 
 namespace WebApplication1
 {
@@ -25,14 +26,14 @@ namespace WebApplication1
                 fileUpload.SaveAs(filePath);
 
                 // Construct your connection string
-                string connectionString = ConfigurationManager.ConnectionStrings["YourConnectionStringName"].ConnectionString;
+                string connectionString = "server=localhost;database=WEC;uid=root;pwd=";
 
                 // Construct your SQL query
-                string query = "INSERT INTO Complaints (reporttype, address, others, FilePath) VALUES (@ReportType, @Barangay, @OtherDetails, @FileName)";
+                string query = "INSERT INTO complaints (reporttype, address, others, FilePath) VALUES (@ReportType, @Barangay, @OtherDetails, @FileName)";
 
-                using (SqlConnection connection = new SqlConnection(connectionString))
+                using (MySqlConnection connection = new MySqlConnection(connectionString)) // Changed SqlConnection to MySqlConnection
                 {
-                    using (SqlCommand command = new SqlCommand(query, connection))
+                    using (MySqlCommand command = new MySqlCommand(query, connection)) // Changed SqlCommand to MySqlCommand
                     {
                         // Add parameters to SQL command
                         command.Parameters.AddWithValue("@ReportType", selectedReportType);
@@ -65,8 +66,3 @@ namespace WebApplication1
         }
     }
 }
-
-webconfig ito
-<connectionStrings>
-	<add name="YourConnectionStringName" connectionString="server=localhost;database=WEC;uid=root;pwd=" providerName="System.Data.SqlClient" />
-</connectionStrings>
