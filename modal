@@ -1,0 +1,32 @@
+<!-- The Modal -->
+<div id="logoutModal" class="modal">
+    <div class="modal-content">
+        <h2>Are you sure you want to sign out?</h2>
+        <div class="modal-buttons">
+            <button class="modal-button cancel-button" id="cancelButton">Cancel</button>
+            <button class="modal-button logout-button" id="logoutButton">Sign Out</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('logout-link').addEventListener('click', function (event) {
+        event.preventDefault();
+        document.getElementById('logoutModal').style.display = 'block';
+    });
+
+    document.getElementById('cancelButton').addEventListener('click', function () {
+        document.getElementById('logoutModal').style.display = 'none';
+    });
+
+    document.getElementById('logoutButton').addEventListener('click', function () {
+        window.location.href = 'index.aspx';
+    });
+
+    // Close the modal if the user clicks outside of it
+    window.onclick = function (event) {
+        if (event.target == document.getElementById('logoutModal')) {
+            document.getElementById('logoutModal').style.display = 'none';
+        }
+    }
+</script>
