@@ -1,0 +1,72 @@
+using System;
+using System.Data.SqlClient;
+using System.Configuration;
+using System.Web.UI;
+
+namespace WebApplication1
+{
+    public partial class complaint : System.Web.UI.Page
+    {
+        protected void SubmitButton_Click(object sender, EventArgs e)
+        {
+            // Check if necessary controls are not null
+            if (reportType != null && barangay != null && fileUpload.HasFile)
+            {
+                // Get selected values from dropdown lists and text input
+                string selectedReportType = reportType.SelectedValue;
+                string selectedBarangay = barangay.SelectedValue;
+                string otherDetails = others.Text;
+
+                // Get file details
+                string fileName = fileUpload.FileName;
+                string filePath = Server.MapPath("~/Uploads/") + fileName; // Assuming "Uploads" is a folder in your web application
+
+                // Save file to server
+                fileUpload.SaveAs(filePath);
+
+                // Construct your connection string
+                string connectionString = ConfigurationManager.ConnectionStrings["YourConnectionStringName"].ConnectionString;
+
+                // Construct your SQL query
+                string query = "INSERT INTO Complaints (reporttype, address, others, FilePath) VALUES (@ReportType, @Barangay, @OtherDetails, @FileName)";
+
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        // Add parameters to SQL command
+                        command.Parameters.AddWithValue("@ReportType", selectedReportType);
+                        command.Parameters.AddWithValue("@Barangay", selectedBarangay);
+                        command.Parameters.AddWithValue("@OtherDetails", otherDetails);
+                        command.Parameters.AddWithValue("@FileName", fileName);
+
+                        try
+                        {
+                            // Open connection and execute query
+                            connection.Open();
+                            command.ExecuteNonQuery();
+
+                            // Data inserted successfully
+                            // Clear dropdown list and textboxes
+                            reportType.ClearSelection();
+                            barangay.ClearSelection();
+                            others.Text = "";
+
+                            // Execute JavaScript function to show notification
+                            ScriptManager.RegisterStartupScript(this, GetType(), "showNotification", "showNotification('Your report was submitted');", true);
+                        }
+                        catch (Exception ex)
+                        {
+                            // Handle exceptions, display error message, log, etc.
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+webconfig ito
+<connectionStrings>
+	<add name="YourConnectionStringName" connectionString="server=localhost;database=WEC;uid=root;pwd=" providerName="System.Data.SqlClient" />
+</connectionStrings>
