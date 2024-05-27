@@ -1,0 +1,69 @@
+using MySql.Data.MySqlClient;
+using System;
+using System.Web.UI;
+
+namespace WebApplication1
+{
+    public partial class adminlogin : System.Web.UI.Page
+    {
+        protected void Page_Load(object sender, EventArgs e)
+        {
+        }
+
+        protected void Button1_Click(object sender, EventArgs e)
+        {
+            string connectionString = "server=localhost;database=WEC;uid=root;pwd=";
+            string username = usernametxt.Text;
+            string password = passtxt.Text;
+
+            if (IsValidLogin(connectionString, username, password))
+            {
+                // Redirect to dashmin.aspx upon successful login
+                Response.Redirect("dashmin.aspx");
+            }
+            else
+            {
+                // Display error alert for invalid login
+                string errorScript = "alert('Invalid username or password!');";
+                ClientScript.RegisterStartupScript(this.GetType(), "loginError", errorScript, true);
+                ClearTextBoxes();
+            }
+        }
+
+        private bool IsValidLogin(string connectionString, string username, string password)
+        {
+            string query = "SELECT COUNT(*) FROM admin WHERE username = @username AND password = @password";
+
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                using (MySqlCommand command = new MySqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@username", username);
+                    command.Parameters.AddWithValue("@password", password);
+
+                    connection.Open();
+                    int count = Convert.ToInt32(command.ExecuteScalar());
+
+                    return count > 0;
+                }
+            }
+        }
+
+        protected void clearbtn_Click(object sender, EventArgs e)
+        {
+            ClearTextBoxes();
+        }
+
+        private void ClearTextBoxes()
+        {
+            usernametxt.Text = "";
+            passtxt.Text = "";
+        }
+
+        protected void cancelbtn_Click(object sender, EventArgs e)
+        {
+            string script = "window.close();";
+            ClientScript.RegisterStartupScript(this.GetType(), "closeWindow", script, true);
+        }
+    }
+}
