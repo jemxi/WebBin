@@ -53,12 +53,12 @@ namespace WebApplication1
                             barangay.ClearSelection();
                             others.Text = "";
 
-                            // Execute JavaScript function to show notification
-                            ScriptManager.RegisterStartupScript(this, GetType(), "showNotification", "showNotification('Your report was submitted');", true);
+                            ScriptManager.RegisterStartupScript(this, this.GetType(), "openSuccessModal", "openModal('successModal');", true);
                         }
-                        catch (Exception ex)
+                        catch (Exception)
                         {
-                            // Handle exceptions, display error message, log, etc.
+                            // If there is an error, open the error modal
+                            ScriptManager.RegisterStartupScript(this, this.GetType(), "openErrorModal", "openModal('errorModal');", true);
                         }
                     }
                 }
