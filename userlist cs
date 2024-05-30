@@ -1,0 +1,97 @@
+using System;
+using System.Data;
+using System.Web.UI.WebControls;
+using MySql.Data.MySqlClient;
+
+namespace WebApplication1
+{
+    public partial class userlist : System.Web.UI.Page
+    {
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            if (!IsPostBack)
+            {
+                BindUserData();
+            }
+        }
+
+        private void BindUserData()
+        {
+            string connectionString = "server=localhost;database=WEC;uid=root;pwd=";
+
+            string query = "SELECT username, address, phoneno FROM login";
+
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                using (MySqlCommand command = new MySqlCommand(query, connection))
+                {
+                    connection.Open();
+
+                    using (MySqlDataAdapter adapter = new MySqlDataAdapter(command))
+                    {
+                        DataTable dt = new DataTable();
+                        adapter.Fill(dt);
+
+                        // Bind the DataTable to the GridView control
+                        reklamo.DataSource = dt;
+                        reklamo.DataBind();
+                    }
+                }
+            }
+        }
+
+        protected void Reklamo_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                // Mask the username
+                string username = e.Row.Cells[0].Text;
+                e.Row.Cells[0].Text = MaskUsername(username);
+
+                // Mask the address
+                string address = e.Row.Cells[1].Text;
+                e.Row.Cells[1].Text = MaskAddress(address);
+
+                // Mask the phone number
+                string phoneno = e.Row.Cells[2].Text;
+                e.Row.Cells[2].Text = MaskPhoneNumber(phoneno);
+            }
+        }
+
+        private string MaskUsername(string username)
+        {
+            if (username.Length > 2)
+            {
+                return username[0] + new string('*', username.Length - 2) + username[^1];
+            }
+            else
+            {
+                return username;
+            }
+        }
+
+        private string MaskAddress(string address)
+        {
+            if (address.Length > 2)
+            {
+                return address[0] + new string('*', address.Length - 2) + address[^1];
+            }
+            else
+            {
+                return address;
+            }
+        }
+
+        private string MaskPhoneNumber(string phoneno)
+        {
+            if (phoneno.Length > 4)
+            {
+                return new string('*', phoneno.Length - 4) + phoneno[^4..];
+            }
+            else
+            {
+                return phoneno;
+            }
+        }
+    }
+}
