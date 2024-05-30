@@ -1,0 +1,79 @@
+using System;
+using System.Net.Mail;
+
+namespace WebApplication1
+{
+    public partial class resetpassword : System.Web.UI.Page
+    {
+        protected void Page_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void btnSendOTP_Click(object sender, EventArgs e)
+        {
+            // Generate a random OTP (You may have your own method for generating OTP)
+            Random random = new Random();
+            string otp = random.Next(100000, 999999).ToString();
+
+            // Get the email address entered by the user
+            string userEmail = txtEmail.Text;
+
+            // Send the OTP to the user's email address
+            SendOTP(userEmail, otp);
+
+            // You can optionally store the OTP in a session or database for verification later
+            Session["OTP"] = otp;
+
+            // Show the OTP input panel
+            pnlOTP.Visible = true;
+        }
+
+        protected void btnVerifyOTP_Click(object sender, EventArgs e)
+        {
+            // Get the OTP entered by the user
+            string enteredOTP = txtOTP.Text;
+
+            // Get the OTP stored in session or database
+            string storedOTP = Session["OTP"] as string;
+
+            if (storedOTP != null) // Check if storedOTP is not null
+            {
+                // Verify the entered OTP with the stored OTP
+                if (enteredOTP == storedOTP)
+                {
+                    lblMessage.Text = "OTP verified successfully!";
+                    // Redirect to password reset page or perform further actions
+                }
+                else
+                {
+                    lblMessage.Text = "Invalid OTP. Please try again.";
+                }
+            }
+            else
+            {
+                lblMessage.Text = "Session expired. Please request a new OTP.";
+            }
+        }
+
+        // Method to send OTP via email
+        private void SendOTP(string userEmail, string otp)
+        {
+            // Configure the SMTP client
+            SmtpClient smtpClient = new SmtpClient("smtp.gmail.com");
+            smtpClient.Port = 587; // You may need to change this port based on your email provider
+            smtpClient.EnableSsl = true; // Enable SSL if required
+            smtpClient.Credentials = new System.Net.NetworkCredential("azjohnemmanuel@gmail.com", "ekdgjdbbhhkfhkqi");
+
+            // Prepare the email message
+            MailMessage mailMessage = new MailMessage();
+            mailMessage.From = new MailAddress("azjohnemmanuel@gmail.com");
+            mailMessage.To.Add(userEmail);
+            mailMessage.Subject = "Reset Password OTP";
+            mailMessage.Body = "Dear User,\nPlease do not share your OTP with anyone. Our support team will never ask for your OTP.\n\nBest regards,\nWEC\n\nYour OTP is: " + otp;
+
+            // Send the email
+            smtpClient.Send(mailMessage);
+        }
+    }
+}
