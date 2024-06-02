@@ -16,169 +16,170 @@
 
     <style>
         .modal {
-            display: none; /* Hidden by default */
-            position: fixed; /* Stay in place */
-            z-index: 1; /* Sit on top */
-            left: 0;
-            top: 0;
-            width: 100%; /* Full width */
-            height: 100%; /* Full height */
-            overflow: auto; /* Enable scroll if needed */
-            background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
-            animation: fadeIn 0.3s; /* Fade in animation */
-        }
+     display: none; /* Hidden by default */
+     position: fixed; /* Stay in place */
+     z-index: 1; /* Sit on top */
+     left: 0;
+     top: 0;
+     width: 100%; /* Full width */
+     height: 100%; /* Full height */
+     overflow: auto; /* Enable scroll if needed */
+     background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+     animation: fadeIn 0.3s; /* Fade in animation */
+ }
 
-        .modal-content {
-            background-color: #fefefe;
-            margin: 15% auto; /* 15% from the top and centered */
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%; /* Could be more or less, depending on screen size */
-            max-width: 400px;
-            border-radius: 8px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            text-align: center;
-            animation: slideIn 0.3s; /* Slide in animation */
-        }
+ .modal-content {
+     background-color: #fefefe;
+     margin: 15% auto; /* 15% from the top and centered */
+     padding: 20px;
+     border: 1px solid #888;
+     width: 80%; /* Could be more or less, depending on screen size */
+     max-width: 400px;
+     border-radius: 8px;
+     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+     text-align: center;
+     animation: slideIn 0.3s; /* Slide in animation */
+ }
 
-        .modal-content h2 {
-            margin: 0 0 20px;
-        }
+ .modal-content h2 {
+     margin: 0 0 20px;
+ }
 
-        .modal-buttons {
-            display: flex;
-            justify-content: space-between;
-        }
+ .modal-buttons {
+     display: flex;
+     justify-content: space-between;
+ }
 
-        .modal-button {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background-color 0.3s, transform 0.3s; /* Hover effect */
-        }
+ .modal-button {
+     padding: 10px 20px;
+     border: none;
+     border-radius: 4px;
+     cursor: pointer;
+     transition: background-color 0.3s, transform 0.3s; /* Hover effect */
+ }
 
-        .cancel-button {
-            background-color: #e0e0e0;
-            color: #333;
-        }
+ .cancel-button {
+     background-color: #e0e0e0;
+     color: #333;
+ }
 
-        .cancel-button:hover {
-            background-color: #d5d5d5;
-            transform: scale(1.05);
-        }
+ .cancel-button:hover {
+     background-color: #d5d5d5;
+     transform: scale(1.05);
+ }
 
-        .logout-button {
-            background-color: #6a5acd;
-            color: white;
-        }
+ .logout-button {
+     background-color: #6a5acd;
+     color: white;
+ }
 
-        .logout-button:hover {
-            background-color: #5949c1;
-            transform: scale(1.05);
-        }
+ .logout-button:hover {
+     background-color: #5949c1;
+     transform: scale(1.05);
+ }
 
-        @keyframes fadeIn {
-            from {opacity: 0;}
-            to {opacity: 1;}
-        }
+ @keyframes fadeIn {
+     from {opacity: 0;}
+     to {opacity: 1;}
+ }
 
-        @keyframes slideIn {
-            from {transform: translateY(-50px); opacity: 0;}
-            to {transform: translateY(0); opacity: 1;}
-        }
+ @keyframes slideIn {
+     from {transform: translateY(-50px); opacity: 0;}
+     to {transform: translateY(0); opacity: 1;}
+ }
 
-        .complaint-box {
-            border: 1px solid #ddd;
-            padding: 15px;
-            margin: 10px;
-            border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            background-color: #fff;
-        }
+ .complaint-box {
+     border: 1px solid #ddd;
+     padding: 15px;
+     margin: 10px;
+     border-radius: 5px;
+     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+     background-color: #fff;
+ }
 
-        .complaint-box img {
-            max-width: 100%;
-            height: auto;
-            margin-top: 10px;
-        }
+ .complaint-box img {
+     max-width: 100%;
+     height: auto;
+     margin-top: 10px;
+ }
 
-        .complaint-box h3 {
-            margin: 0;
-            font-size: 1.2em;
-        }
+ .complaint-box h3 {
+     margin: 0;
+     font-size: 1.2em;
+ }
 
-        .complaint-box p {
-            margin: 5px 0;
-        }
+ .complaint-box p {
+     margin: 5px 0;
+ }
 
-        .switch-mode {
-            position: relative;
-            display: inline-block;
-            width: 40px;
-            height: 20px;
-            background-color: #ccc;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
+ .switch-mode {
+     position: relative;
+     display: inline-block;
+     width: 40px;
+     height: 20px;
+     background-color: #ccc;
+     border-radius: 20px;
+     cursor: pointer;
+     transition: background-color 0.3s;
+ }
 
-        #switch-mode:checked + .switch-mode {
-            background-color: #666;
-        }
+ #switch-mode:checked + .switch-mode {
+     background-color: #666;
+ }
 
-        .brand {
-            display: flex;
-            align-items: center;
-            padding: 10px;
-            size: 10px;
-        }
+ .brand {
+     display: flex;
+     align-items: center;
+     padding: 10px;
+     size: 10px;
+ }
 
-        .brand img {
-            max-height: 120px;
-            margin-right: 10px;
-            margin-top: 10px;
-            margin-bottom: 0px;
-        }
+ .brand img {
+     max-height: 120px;
+     margin-right: 10px;
+     margin-top: 10px;
+     margin-bottom: 0px;
+ }
 
-        .brand .text {
-            font-size: 0.8em;
-            font-weight: bold;
-            color: #305830;
-        }
+ .brand .text {
+     font-size: 0.8em;
+     font-weight: bold;
+     color: #305830;
+ }
 
-        #sidebar .side-menu li a {
-            color: green; 
-        }
+ #sidebar .side-menu li a {
+     color: green; 
+ }
 
-        #sidebar .side-menu li a:hover {
-            color: deeppink; /* Change this to the desired darker green for hover */
-        }
+ #sidebar .side-menu li a:hover {
+     color: deeppink; /* Change this to the desired darker green for hover */
+ }
 
-        #sidebar .side-menu li.active a {
-            color: #305830; /* Change this to the desired darker green for active */
-        }
+ #sidebar .side-menu li.active a {
+     color: #305830; /* Change this to the desired darker green for active */
+ }
 
-        .complaint-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
+ .complaint-table {
+     width: 100%;
+     border-collapse: collapse;
+     margin-top: 20px;
+ }
 
-        .complaint-table th, .complaint-table td {
-            border: 1px solid #ddd;
-            padding: 8px;
-        }
+ .complaint-table th, .complaint-table td {
+     border: 1px solid #ddd;
+     padding: 8px;
+ }
 
-        .complaint-table th {
-            background-color: #4CAF50;
-            color: white;
-            text-align: center;
-        }
+ .complaint-table th {
+     background-color: #4CAF50;
+     color: white;
+     text-align: center;
+ }
 
-        .complaint-table td {
-            text-align: left;
-        }
+ .complaint-table td {
+     text-align: left;
+ }
+
     </style>
 </head>
 <body>
@@ -289,32 +290,21 @@
             </span>
         </a>
     </li>
-    <li>
-        <a href="pendingreq.aspx">
-            <i class='bx bxs-hourglass'></i>
-            <span class="text">
-                <h3><asp:Literal ID="PendingRequestsCount" runat="server"></asp:Literal></h3>
-                <p>Pending Requests</p>
-            </span>
-        </a>
-    </li>
-    <li>
-        <a href="settled_complaints_page.aspx"> <!-- Add your desired URL here -->
-            <i class='bx bxs-check-circle'></i>
-            <span class="text">
-                <h3><asp:Literal ID="SettledComplaintsCount" runat="server"></asp:Literal></h3>
-                <p>Settled Complaints</p>
-            </span>
-        </a>
-    </li>
+   
+     <li>
+                    <a href="settled_complaints_page.aspx">
+                        <i class='bx bxs-check-circle'></i>
+                        <span class="text">
+                            <h3><asp:Literal ID="SettledComplaintsCount" runat="server"></asp:Literal></h3>
+                            <p>Settled Complaints</p>
+                        </span>
+                    </a>
+                </li>
 </ul>
 
             <!-- End Display Complaints Count -->
 
-            <!-- Display Pending Requests -->
-            <div id="pendingRequestsContainer">
-                <!-- Your pending requests content goes here -->
-            </div>
+           
             <!-- End Display Pending Requests -->
 
             <!-- Display Settled Complaints -->
@@ -330,12 +320,32 @@
             <!-- End Display All Complaints -->
 
             <!-- Display Complaints -->
-           
+  <div id="complaintsContainer">
+          <asp:Repeater ID="ComplaintsRepeater" runat="server">
+              <ItemTemplate>
+                  <div class="complaint-box">
+                      <p>Report Type: <asp:Literal ID="ReportTypeLiteral" runat="server" Text='<%# Eval("reporttype") %>'></asp:Literal></p>
+                      <p>Address: <asp:Literal ID="AddressLiteral" runat="server" Text='<%# Eval("address") %>'></asp:Literal></p>
+                      <p>Others: <asp:Literal ID="OthersLiteral" runat="server" Text='<%# Eval("others") %>'></asp:Literal></p>
+                      <asp:Image ID="ComplaintImage" runat="server" ImageUrl='<%# GetImagePath(Eval("filepath")) %>' Visible='<%# !string.IsNullOrEmpty((string)Eval("filepath")) %>' />
+                      
+                  </div>
+              </ItemTemplate>
+          </asp:Repeater>
+          <asp:Literal ID="Literal1" runat="server"></asp:Literal>
+      </div>
+
+    
+      <asp:Literal ID="DebugLiteral" runat="server"></asp:Literal>
+  </div>
             <!-- End Display Complaints -->
         </main>
         <!-- MAIN -->
     </section>
     <!-- CONTENT -->
+
+
+   
 
     <!-- The Modal -->
     <div id="logoutModal" class="modal">
@@ -354,25 +364,19 @@
             event.preventDefault();
             document.getElementById('logoutModal').style.display = 'block';
         });
-
         document.getElementById('cancelButton').addEventListener('click', function () {
             document.getElementById('logoutModal').style.display = 'none';
         });
     </script>
     <script>
-        function redirectToPendingReq() {
-            window.location.href = "pendingreq.aspx";
-        }
-
+      
         function redirectToResolve(index) {
             window.location.href = "resolve.aspx?index=" + index;
         }
-
         document.getElementById('logout-link').addEventListener('click', function (event) {
             event.preventDefault();
             document.getElementById('logoutModal').style.display = 'block';
         });
-
         document.getElementById('cancelButton').addEventListener('click', function () {
             document.getElementById('logoutModal').style.display = 'none';
         });
@@ -380,5 +384,3 @@
 
 </body>
 </html>
-
-
