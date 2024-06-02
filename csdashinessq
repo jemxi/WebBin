@@ -1,0 +1,87 @@
+using System;
+using System.Configuration;
+using System.Data;
+using MySql.Data.MySqlClient;
+
+namespace WebApplication1
+{
+    public partial class dashmin : System.Web.UI.Page
+    {
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            if (!IsPostBack)
+            {
+                BindComplaints();
+                DisplayComplaintsCount();
+            }
+        }
+
+        private void BindComplaints()
+        {
+            // Construct your connection string
+            string connectionString = "server=localhost;database=WEC;uid=root;pwd=";
+
+            // Construct your SQL query
+            string query = "SELECT reporttype, address, others, filepath, datesubmitted FROM complaints";
+
+
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                using (MySqlCommand command = new MySqlCommand(query, connection))
+                {
+                    connection.Open();
+                    using (MySqlDataReader reader = command.ExecuteReader())
+                    {
+                        ComplaintsRepeater.DataSource = reader;
+                        ComplaintsRepeater.DataBind();
+
+                        // Check if there are any records
+                        if (reader.HasRows)
+                        {
+                            // Move to the first record
+                            reader.Read();
+                            // Get the value of datesubmitted for debugging
+                            string debugValue = reader["datesubmitted"].ToString();
+                            // Set the text of DebugLiteral to debugValue
+                            DebugLiteral.Text = debugValue;
+                        }
+                    }
+                }
+            }
+        }
+
+        private void DisplayComplaintsCount()
+        {
+            // Construct your connection string
+            string connectionString = "server=localhost;database=WEC;uid=root;pwd=";
+
+            // Construct your SQL query to get the count of complaints
+            string query = "SELECT COUNT(*) FROM complaints";
+
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                using (MySqlCommand command = new MySqlCommand(query, connection))
+                {
+                    // Open connection
+                    connection.Open();
+
+                    // Execute the command and get the count
+                    int count = Convert.ToInt32(command.ExecuteScalar());
+
+                    // Assign the count to the ComplaintsCount literal control
+                    ComplaintsCount.Text = count.ToString();
+                }
+            }
+        }
+
+        protected string GetImagePath(object filepath)
+        {
+            if (filepath != null)
+            {
+                string fileName = filepath.ToString();
+                return "~/uploads/" + fileName; // Assuming "uploads" is the folder name where images are stored
+            }
+            return string.Empty;
+        }
+    }
+}
