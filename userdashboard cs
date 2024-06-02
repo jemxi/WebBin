@@ -1,6 +1,8 @@
 using System;
 using System.Configuration;
 using System.Data;
+using System.Data.SqlClient;
+using System.Runtime.Remoting.Messaging;
 using MySql.Data.MySqlClient;
 
 namespace WebApplication1
@@ -13,6 +15,7 @@ namespace WebApplication1
             {
                 BindComplaints();
                 DisplayComplaintsCount();
+                SetSettledComplaintsCount();
             }
         }
 
@@ -22,24 +25,28 @@ namespace WebApplication1
             string connectionString = "server=localhost;database=WEC;uid=root;pwd=";
 
             // Construct your SQL query
-            string query = "SELECT reporttype, address, others, filepath FROM complaints";
+            string query = "SELECT reporttype, address, others, filepath, datesubmitted FROM complaints";
 
-            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                using (MySqlCommand command = new MySqlCommand(query, connection))
+                using (SqlCommand command = new SqlCommand(query, connection))
                 {
-                    // Open connection
                     connection.Open();
-
-                    // Execute the command and load the data into a DataTable
-                    using (MySqlDataAdapter adapter = new MySqlDataAdapter(command))
+                    using (SqlDataReader reader = command.ExecuteReader())
                     {
-                        DataTable dt = new DataTable();
-                        adapter.Fill(dt);
-
-                        // Bind the DataTable to the Repeater control
-                        ComplaintsRepeater.DataSource = dt;
+                        ComplaintsRepeater.DataSource = reader;
                         ComplaintsRepeater.DataBind();
+
+                        // Check if there are any records
+                        if (reader.HasRows)
+                        {
+                            // Move to the first record
+                            reader.Read();
+                            // Get the value of datesubmitted for debugging
+                            string debugValue = reader["datesubmitted"].ToString();
+                            // Set the text of DebugLiteral to debugValue
+                            DebugLiteral.Text = debugValue;
+                        }
                     }
                 }
             }
@@ -67,5 +74,40 @@ namespace WebApplication1
                 }
             }
         }
+
+        private void SetSettledComplaintsCount()
+        {
+            // Construct your connection string
+            string connectionString = "server=localhost;database=WEC;uid=root;pwd=";
+
+            // Construct your SQL query to get the count of settled complaints
+            string query = "SELECT COUNT(*) FROM resolvedcomps";
+
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                using (MySqlCommand command = new MySqlCommand(query, connection))
+                {
+                    // Open connection
+                    connection.Open();
+
+                    // Execute the command and get the count
+                    int count = Convert.ToInt32(command.ExecuteScalar());
+
+                    // Assign the count to the SettledComplaintsCount literal control
+                    SettledComplaintsCount.Text = count.ToString();
+                }
+            }
+        }
+        protected string GetImagePath(object filepath)
+        {
+            if (filepath != null)
+            {
+                string fileName = filepath.ToString();
+                return "~/uploads/" + fileName; // Assuming "uploads" is the folder name where images are stored
+            }
+            return string.Empty;
+        }
+
+       
     }
 }
