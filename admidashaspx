@@ -292,15 +292,15 @@
        
            
    
-    <li>
-        <a href="settled_complaints_page.aspx"> <!-- Add your desired URL here -->
-            <i class='bx bxs-check-circle'></i>
-            <span class="text">
-                <h3><asp:Literal ID="SettledComplaintsCount" runat="server"></asp:Literal></h3>
-                <p>Settled Complaints</p>
-            </span>
-        </a>
-    </li>
+   <li>
+    <a href="settled_complaints_page.aspx">
+        <i class='bx bxs-check-circle'></i>
+        <span class="text">
+            <h3><asp:Literal ID="SettledComplaintsCount" runat="server"></asp:Literal></h3>
+            <p>Settled Complaints</p>
+        </span>
+    </a>
+</li>
 </ul>
 
             <!-- End Display Complaints Count -->
@@ -386,6 +386,12 @@
             document.getElementById('logoutModal').style.display = 'none';
         });
     </script>
+    <script>
+        function showSuccessMessage() {
+            alert("The report has been resolved");
+        }
+    </script>
+
 
 </body>
 </html>
