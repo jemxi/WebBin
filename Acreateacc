@@ -1,0 +1,386 @@
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="createacc.aspx.cs" Inherits="WebApplication1.createacc" %>
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>Create Account</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <style>
+            
+    body {
+        font-family: Arial, sans-serif;
+        background-image: linear-gradient(45deg, #305830, #4cff00);
+        margin: 0;
+        padding: 0;
+        color: #305830;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        position: relative;
+    }
+    #createacc-container {
+        width: 320px;
+        background-color: #fff;
+        border-radius: 30px;
+        border-top-right-radius: 0;
+        padding: 20px;
+        box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+        position: relative;
+    }
+    #createacc-container h2 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .form-group {
+        margin-bottom: 20px;
+        position: relative;
+        text-align: center;
+    }
+    .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        color: #305830;
+        position: absolute;
+        left: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+    .form-group input[type="text"],
+    .form-group input[type="password"],
+    .form-group select {
+        width: 100%;
+        padding: 10px 10px 10px 40px;
+        border: 2px solid #ccc;
+        border-radius: 20px;
+        outline: none;
+        border-color: #305830;
+        transition: border-color 0.3s, transform 0.3s;
+        box-sizing: border-box;
+    }
+    .form-group input[type="text"]:hover,
+    .form-group input[type="password"]:hover,
+    .form-group select:hover {
+        transform: scale(1.05);
+    }
+    .form-group input[type="text"]:focus,
+    .form-group input[type="password"]:focus,
+    .form-group select:focus {
+        border-color: #305830;
+        transform: scale(1.1);
+    }
+    .form-group input[type="submit"],
+    .form-group button {
+        border-style: none;
+        border-color: inherit;
+        border-width: medium;
+        padding: 10px;
+        background-image: linear-gradient(45deg, #b6ff00, #305830);
+        color: #fff;
+        cursor: pointer;
+        border-radius: 3px;
+        outline: none;
+        width: calc(33.33% - 5px);
+        transition: background-color 0.3s, transform 0.3s;
+    }
+    .form-group input[type="submit"]:hover,
+    .form-group button:hover {
+        background-color: #0056b3;
+        transform: scale(1.05);
+    }
+    .form-group input[type="submit"]:active,
+    .form-group button:active {
+        transform: scale(0.95);
+    }
+    .form-group #Label1,
+    .form-group #HyperLink1 {
+        display: block;
+        font-size: 20px;
+        margin: 10px auto;
+        color: #305830;
+    }
+    .form-group #HyperLink1:hover {
+        color: #0056b3;
+    }
+    .GoogleButton {
+        display: block;
+        text-align: center;
+        width: 100%;
+        margin: 10px auto 0;
+        margin-top: -10px;
+    }
+    .GoogleButton button {
+        background-color: transparent;
+        color: #305830;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        border-radius: 3px;
+        transition: background-color 0.3s, transform 0.3s;
+        margin-top: -10px;
+    }
+    .GoogleButton button:hover {
+        background-color: #f0f0f0;
+        transform: scale(1.05);
+    }
+    .GoogleButton button:active {
+        transform: scale(0.95);
+    }
+    .GoogleButton i {
+        margin-right: 10px;
+    }
+    .admin-login {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #305830;
+        color: #fff;
+        border: 2px solid #305830;
+        border-radius: 3px;
+        text-decoration: none;
+        transition: background-color 0.3s, transform 0.3s;
+        margin-bottom: 5px;
+        width: calc(100% - 40px);
+        margin-top: 5px;
+    }
+    .admin-login:hover {
+        background-color: #284d29;
+        transform: scale(1.05);
+    }
+    .admin-login:active {
+        transform: scale(0.95);
+    }
+    #createaccbtn,
+    #clearbtn,
+    #cancelbtn {
+        border-style: none;
+        border-color: inherit;
+        border-width: medium;
+        padding: 10px;
+        background-color: #4cff00;
+        color: #fff;
+        cursor: pointer;
+        border-radius: 30px;
+        transition: 0.5s;
+        outline: none;
+        width: calc(33.33% - 5px);
+        transition: background-color 0.3s, transform 0.3s;
+    }
+    #createaccbtn:hover,
+    #clearbtn:hover,
+    #cancelbtn:hover {
+        background-color: #0056b3;
+        transform: scale(1.05);
+    }
+    #createaccbtn:active,
+    #clearbtn:active,
+    #cancelbtn:active {
+        transform: scale(0.95);
+    }
+    #notification {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #ff0000;
+        color: #ffffff;
+        padding: 10px;
+        border-radius: 5px;
+        text-align: center;
+        z-index: 9999;
+    }
+    #successLabel,
+    #passwordRequirementLabel {
+        display: block;
+        font-size: 14px;
+        color: red;
+        margin-top: 5px;
+        text-align: center;
+    }
+    .password-container {
+        position: relative;
+    }
+    .password-container .toggle-password {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+    }
+
+    #back-menu {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 999;
+}
+#back-menu a {
+    text-decoration: none;
+    color: #fff;
+    font-weight: bold;
+    font-size: 24px;
+}
+</style>
+    
+    <script>
+        function verifyCaptcha() {
+            var response = grecaptcha.getResponse();
+            if (response.length === 0) {
+                document.getElementById("notification").style.display = "block";
+                setTimeout(function () {
+                    document.getElementById("notification").style.display = "none";
+                }, 3000);
+                return false;
+            }
+            return true;
+        }
+
+        function togglePassword() {
+            var pwField = document.getElementById('<%= pwtxt.ClientID %>');
+            var pwToggle = document.getElementById('togglePasswordIcon');
+            if (pwField.type === "password") {
+                pwField.type = "text";
+                pwToggle.classList.remove('fa-eye');
+                pwToggle.classList.add('fa-eye-slash');
+            } else {
+                pwField.type = "password";
+                pwToggle.classList.remove('fa-eye-slash');
+                pwToggle.classList.add('fa-eye');
+            }
+        }
+
+        function isNumberKey(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode;
+            var inputValue = evt.target.value;
+
+            // Check if the input value starts with '0'
+            if (inputValue.length === 0 && charCode !== 48) {
+                return false;
+            }
+
+            // Check if the input length is already 11 digits
+            if (inputValue.length >= 11 || (charCode < 48 || charCode > 57)) {
+                return false;
+            }
+            return true;
+        }
+
+
+
+
+    </script>
+
+</head>
+<body>
+    <form id="form1" runat="server">
+
+         <div id="back-menu">
+            <asp:HyperLink ID="backLink" runat="server" NavigateUrl="index.aspx"> <i class="fas fa-arrow-left"></i>
+            </asp:HyperLink>
+        </div>
+
+        <div id="createacc-container">
+            <div id="notification">Please complete the verification</div>
+            <h2>Create Account</h2>
+            <div class="form-group">
+                <label for="usernametxt"><i class="fas fa-user"></i></label>
+                <asp:TextBox ID="usernametxt" runat="server" placeholder="Username"></asp:TextBox>
+            </div>
+            <div class="form-group">
+                <label for="phoneno"><i class="fas fa-phone"></i></label>
+
+              <asp:TextBox ID="phoneno" runat="server" placeholder="Phone Number" onkeypress="return isNumberKey(event)"></asp:TextBox>
+
+            </div>
+            <div class="form-group">
+                <label for="addresstxt"><i class="fas fa-home"></i></label>
+                <asp:DropDownList ID="addressDropdown" runat="server" CssClass="address-dropdown" Placeholder="Select Address">
+                      <asp:ListItem>Ayos Lomboy</asp:ListItem>
+  <asp:ListItem>Bacayao</asp:ListItem>
+  <asp:ListItem>Bagong Barrio</asp:ListItem>
+  <asp:ListItem>Balbalino</asp:ListItem>
+  <asp:ListItem>Balingog East</asp:ListItem>
+  <asp:ListItem>Balingog West</asp:ListItem>
+  <asp:ListItem>Banitan</asp:ListItem>
+  <asp:ListItem>Bantug</asp:ListItem>
+  <asp:ListItem>Bulakid</asp:ListItem>
+  <asp:ListItem>Bunol</asp:ListItem>
+  <asp:ListItem>Caballero</asp:ListItem>
+  <asp:ListItem>Cabaruan</asp:ListItem>
+  <asp:ListItem>Caingin Tabing Ilog</asp:ListItem>
+  <asp:ListItem>Calem</asp:ListItem>
+  <asp:ListItem>Camiing</asp:ListItem>
+  <asp:ListItem>Cardinal</asp:ListItem>
+  <asp:ListItem>Casongsong</asp:ListItem>
+  <asp:ListItem>Catimon</asp:ListItem>
+  <asp:ListItem>Cavite</asp:ListItem>
+  <asp:ListItem>Cawayan Bugtong</asp:ListItem>
+  <asp:ListItem>Consuelo</asp:ListItem>
+  <asp:ListItem>Culong</asp:ListItem>
+  <asp:ListItem>Escaño</asp:ListItem>
+  <asp:ListItem>Faigal</asp:ListItem>
+  <asp:ListItem>Galvan</asp:ListItem>
+  <asp:ListItem>Guiset</asp:ListItem>
+  <asp:ListItem>Lamorito</asp:ListItem>
+  <asp:ListItem>Lennec</asp:ListItem>
+  <asp:ListItem>Macamias</asp:ListItem>
+  <asp:ListItem>Macapabellag</asp:ListItem>
+  <asp:ListItem>Macatcatuit</asp:ListItem>
+  <asp:ListItem>Manacsac</asp:ListItem>
+  <asp:ListItem>Manggang Marikit</asp:ListItem>
+  <asp:ListItem>Maturanoc</asp:ListItem>
+  <asp:ListItem>Maybubon</asp:ListItem>
+  <asp:ListItem>Naglabrahan</asp:ListItem>
+  <asp:ListItem>Nagpandayan</asp:ListItem>
+  <asp:ListItem>Narvacan I</asp:ListItem>
+  <asp:ListItem>Narvacan II</asp:ListItem>
+  <asp:ListItem>Pacac</asp:ListItem>
+  <asp:ListItem>Partida I</asp:ListItem>
+  <asp:ListItem>Partida II</asp:ListItem>
+  <asp:ListItem>Pasong Intsik</asp:ListItem>
+  <asp:ListItem>Saint John District (Poblacion)</asp:ListItem>
+  <asp:ListItem>San Agustin</asp:ListItem>
+  <asp:ListItem>San Andres</asp:ListItem>
+  <asp:ListItem>San Bernardino</asp:ListItem>
+  <asp:ListItem>San Marcelino</asp:ListItem>
+  <asp:ListItem>San Miguel</asp:ListItem>
+  <asp:ListItem>San Rafael</asp:ListItem>
+  <asp:ListItem>San Roque</asp:ListItem>
+  <asp:ListItem>Santa Ana</asp:ListItem>
+  <asp:ListItem>Santa Cruz</asp:ListItem>
+  <asp:ListItem>Santa Lucia</asp:ListItem>
+  <asp:ListItem>Santa Veronica District (Poblacion)</asp:ListItem>
+  <asp:ListItem>Santo Cristo District (Poblacion)</asp:ListItem>
+  <asp:ListItem>Saranay District (Poblacion)</asp:ListItem>
+  <asp:ListItem>Sinulatan</asp:ListItem>
+  <asp:ListItem>Subol</asp:ListItem>
+  <asp:ListItem>Tampac I</asp:ListItem>
+  <asp:ListItem>Tampac II & III</asp:ListItem>
+  <asp:ListItem>Triala</asp:ListItem>
+  <asp:ListItem>Yuson</asp:ListItem>
+                </asp:DropDownList>
+            </div>
+            <div class="form-group password-container">
+                <label for="pwtxt"><i class="fas fa-lock"></i></label>
+                <asp:TextBox ID="pwtxt" runat="server" TextMode="Password" placeholder="Password"></asp:TextBox>
+                <i id="togglePasswordIcon" class="fas fa-eye toggle-password" onclick="togglePassword()"></i>
+            </div>
+            <asp:Label ID="passwordRequirementLabel" runat="server" CssClass="passwordRequirementLabel" Visible="false"></asp:Label>
+            <div class="form-group">
+                <div class="g-recaptcha" data-sitekey="6Lei1MIpAAAAAHC3x-MbL_l5LgSYVKyrwY3j25yc"></div>
+            </div>
+            <div class="form-group">
+                <asp:Button ID="createaccbtn" runat="server" Text="Create" OnClick="Button1_Click" OnClientClick="return verifyCaptcha();" />
+                <asp:Button ID="clearbtn" runat="server" OnClick="Button1_Click1" Text="Clear" />
+                <asp:Button ID="cancelbtn" runat="server" OnClick="Button2_Click" Text="Cancel" />
+            </div>
+            <div class="form-group">
+                <asp:Label ID="Label1" runat="server" Text="Already have an account?" />
+                <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="~/WebForm1.aspx" Font-Size="15px" ForeColor="#0000FF">Login</asp:HyperLink>
+            </div>
+            <asp:Label ID="successLabel" runat="server" CssClass="successLabel" Visible="false"></asp:Label>
+        </div>
+    </form>
+</body>
+</html>
