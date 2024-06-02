@@ -1,0 +1,47 @@
+using System;
+using System.Data;
+using System.Web.UI.WebControls;
+using MySql.Data.MySqlClient;
+
+namespace WebApplication1
+{
+    public partial class userlist : System.Web.UI.Page
+    {
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            if (!IsPostBack)
+            {
+                BindUserData();
+            }
+        }
+
+        private void BindUserData()
+        {
+            string connectionString = "server=localhost;database=WEC;uid=root;pwd=";
+
+            string query = "SELECT username, address, phoneno FROM login";
+
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                using (MySqlCommand command = new MySqlCommand(query, connection))
+                {
+                    connection.Open();
+
+                    using (MySqlDataAdapter adapter = new MySqlDataAdapter(command))
+                    {
+                        DataTable dt = new DataTable();
+                        adapter.Fill(dt);
+
+                        // Bind the DataTable to the GridView control
+                        reklamo.DataSource = dt;
+                        reklamo.DataBind();
+                    }
+                }
+            }
+        }
+
+      
+
+      
+    }
+}
