@@ -1,14 +1,15 @@
 <%@ Page Language="C#" AutoEventWireup="true" CodeBehind="dashboard.aspx.cs" Inherits="WebApplication1.dashboard" %>
+
 <!DOCTYPE html>
 <html lang="en">
-<head>
+<head runat="server">
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!-- Boxicons -->
-    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet' />
     <!-- My CSS -->
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css" />
 
     <title>Dashboard</title>
 
@@ -160,28 +161,27 @@
         <nav>
             <i class='bx bx-menu'></i>
             <a href="#" class="nav-link">Categories</a>
-            <form action="#">
+            <form runat="server">
                 <div class="form-input">
-                    <input type="search" placeholder="Search...">
+                    <input type="search" placeholder="Search..." />
                     <button type="submit" class="search-btn"><i class='bx bx-search'></i></button>
                 </div>
             </form>
-            <input type="checkbox" id="switch-mode" hidden>
+            <input type="checkbox" id="switch-mode" hidden />
             <label for="switch-mode" class="switch-mode"></label>
             <a href="#" class="notification">
                 <i class='bx bxs-bell'></i>
                 <span class="num">8</span>
             </a>
             <a href="#" class="profile">
-                <img src="img/people.png">
+                <img src="img/people.png" />
             </a>
         </nav>
         <!-- NAVBAR -->
 
         <!-- MAIN -->
-         <main>
+        <main>
             <div class="head-title">
-                <!-- Title and breadcrumb -->
                 <div class="left">
                     <h1>Dashboard</h1>
                     <ul class="breadcrumb">
@@ -198,29 +198,49 @@
 
             <!-- Display Complaints Count -->
             <ul class="box-info">
-                <li>
-                    <i class='bx bxs-calendar-check'></i>
-                    <span class="text">
-                        <h3><asp:Literal ID="ComplaintsCount" runat="server"></asp:Literal></h3>
-                        <p>Submitted Complaints</p>
-                    </span>
-                </li>
-            </ul>
+                 <li>
+     <a href="dashboard.aspx">
+         <i class='bx bxs-calendar-check'></i>
+         <span class="text">
+             <h3><asp:Literal ID="ComplaintsCount" runat="server"></asp:Literal></h3>
+             <p>Submitted Complaints</p>
+         </span>
+     </a>
+ </li>
+            
+            <li>
+            <a href="userpending.aspx">
+                <i class='bx bxs-check-circle'></i>
+                <span class="text">
+                    <h3><asp:Literal ID="SettledComplaintsCount" runat="server"></asp:Literal></h3>
+                    <p>Settled Complaints</p>
+                </span>
+            </a>
+        </li>
+                    </ul>
             <!-- End Display Complaints Count -->
+            
+           
+
+
+
+            
+          
+
 
             <!-- Display Complaints -->
             <div id="complaintsContainer">
                 <asp:Repeater ID="ComplaintsRepeater" runat="server">
-                  <ItemTemplate>
-                    <div class="complaint-box">
-                        <p>Report Type: <asp:Literal ID="ReportTypeLiteral" runat="server" Text='<%# Eval("reporttype") %>'></asp:Literal></p>
-                        <p>Address: <asp:Literal ID="AddressLiteral" runat="server" Text='<%# Eval("address") %>'></asp:Literal></p>
-                        <p>Others: <asp:Literal ID="OthersLiteral" runat="server" Text='<%# Eval("others") %>'></asp:Literal></p>
-                        <asp:Image ID="ComplaintImage" runat="server" ImageUrl='<%# Eval("filepath") %>' Visible='<%# !string.IsNullOrEmpty((string)Eval("filepath")) %>' />
-                    </div>
-                </ItemTemplate>
-
+                    <ItemTemplate>
+                        <div class="complaint-box">
+                            <p>Report Type: <asp:Literal ID="ReportTypeLiteral" runat="server" Text='<%# Eval("reporttype") %>'></asp:Literal></p>
+                            <p>Address: <asp:Literal ID="AddressLiteral" runat="server" Text='<%# Eval("address") %>'></asp:Literal></p>
+                            <p>Others: <asp:Literal ID="OthersLiteral" runat="server" Text='<%# Eval("others") %>'></asp:Literal></p>
+                            <asp:Image ID="ComplaintImage" runat="server" ImageUrl='<%# GetImagePath(Eval("filepath")) %>' Visible='<%# !string.IsNullOrEmpty((string)Eval("filepath")) %>' />
+                        </div>
+                    </ItemTemplate>
                 </asp:Repeater>
+                <asp:Literal ID="DebugLiteral" runat="server"></asp:Literal>
             </div>
             <!-- End Display Complaints -->
         </main>
@@ -239,7 +259,6 @@
         </div>
     </div>
 
-    <!-- Your JavaScript code -->
     <script src="script.js"></script>
     <script>
         document.getElementById('logout-link').addEventListener('click', function (event) {
@@ -253,5 +272,4 @@
     </script>
 </body>
 </html>
-
 
