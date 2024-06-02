@@ -1,0 +1,402 @@
+<%@ Page Language="C#" AutoEventWireup="true" CodeFile="dashmin.aspx.cs" Inherits="WebApplication1.dashmin" %>
+
+<!DOCTYPE html>
+<html lang="en">
+<head runat="server">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Boxicons -->
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet' />
+    <!-- My CSS -->
+    <link rel="stylesheet" href="style.css" />
+
+    <title>Dashboard</title>
+
+    <style>
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+            animation: fadeIn 0.3s; /* Fade in animation */
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto; /* 15% from the top and centered */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; /* Could be more or less, depending on screen size */
+            max-width: 400px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            animation: slideIn 0.3s; /* Slide in animation */
+        }
+
+        .modal-content h2 {
+            margin: 0 0 20px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .modal-button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s; /* Hover effect */
+        }
+
+        .cancel-button {
+            background-color: #e0e0e0;
+            color: #333;
+        }
+
+        .cancel-button:hover {
+            background-color: #d5d5d5;
+            transform: scale(1.05);
+        }
+
+        .logout-button {
+            background-color: #6a5acd;
+            color: white;
+        }
+
+        .logout-button:hover {
+            background-color: #5949c1;
+            transform: scale(1.05);
+        }
+
+        @keyframes fadeIn {
+            from {opacity: 0;}
+            to {opacity: 1;}
+        }
+
+        @keyframes slideIn {
+            from {transform: translateY(-50px); opacity: 0;}
+            to {transform: translateY(0); opacity: 1;}
+        }
+
+        .complaint-box {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+        }
+
+        .complaint-box img {
+            max-width: 100%;
+            height: auto;
+            margin-top: 10px;
+        }
+
+        .complaint-box h3 {
+            margin: 0;
+            font-size: 1.2em;
+        }
+
+        .complaint-box p {
+            margin: 5px 0;
+        }
+
+        .switch-mode {
+            position: relative;
+            display: inline-block;
+            width: 40px;
+            height: 20px;
+            background-color: #ccc;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        #switch-mode:checked + .switch-mode {
+            background-color: #666;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            size: 10px;
+        }
+
+        .brand img {
+            max-height: 120px;
+            margin-right: 10px;
+            margin-top: 10px;
+            margin-bottom: 0px;
+        }
+
+        .brand .text {
+            font-size: 0.8em;
+            font-weight: bold;
+            color: #305830;
+        }
+
+        #sidebar .side-menu li a {
+            color: green; 
+        }
+
+        #sidebar .side-menu li a:hover {
+            color: deeppink; /* Change this to the desired darker green for hover */
+        }
+
+        #sidebar .side-menu li.active a {
+            color: #305830; /* Change this to the desired darker green for active */
+        }
+
+        .complaint-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .complaint-table th, .complaint-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+        .complaint-table th {
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+        }
+
+        .complaint-table td {
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SIDEBAR -->
+    <section id="sidebar">
+        <a href="#" class="brand">
+            <i class='bx bxs-smile'></i>
+            <span class="text">Welcome to WeBin</span>
+        </a>
+        <ul class="side-menu top">
+            <li class="active">
+                <a href="#">
+                    <i class='bx bxs-dashboard'></i>
+                    <span class="text">Dashboard</span>
+                </a>
+            </li>
+            <li>
+                <a href="map.aspx">
+                    <i class='bx bxs-shopping-bag-alt'></i>
+                    <span class="text">Maps</span>
+                </a>
+            </li>
+            <li>
+                <a href="complaint.aspx">
+                    <i class='bx bxs-doughnut-chart'></i>
+                    <span class="text">Complaint</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class='bx bxs-cog'></i>
+                    <span class="text">Settings</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="logout" id="logout-link">
+                    <i class='bx bxs-log-out-circle'></i>
+                    <span class="text">Logout</span>
+                </a>
+            </li>
+        </ul>
+    </section>
+    <!-- SIDEBAR -->
+
+    <!-- CONTENT -->
+    <section id="content">
+        <!-- NAVBAR -->
+        <section id="sidebar">
+            <a href="#" class="brand">
+                <i class='bx bxs-smile'></i>
+                <span class="text">Welcome Admin!</span>
+            </a>
+            <ul class="side-menu top">
+                <li class="active">
+                    <a href="dashmin.aspx">
+                        <i class='bx bxs-dashboard'></i>
+                        <span class="text">View Complaint</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class='bx bxs-shopping-bag-alt'></i>
+                        <span class="text">Userlist</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class='bx bxs-cog'></i>
+                        <span class="text">Settings</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="logout" id="logout-link">
+                        <i class='bx bxs-log-out-circle'></i>
+                        <span class="text">Logout</span>
+                    </a>
+                </li>
+            </ul>
+        </section>
+        <!-- NAVBAR -->
+
+        <!-- MAIN -->
+        <main>
+            <div class="head-title">
+                <div class="left">
+                    <h1>Dashboard</h1>
+                    <ul class="breadcrumb">
+                        <li>
+                            <a href="#">Dashboard</a>
+                        </li>
+                        <li><i class='bx bx-chevron-right'></i></li>
+                        <li>
+                            <a class="active" href="#">Home</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Display Complaints Count -->
+           <ul class="box-info">
+    <li>
+        <a href="dashmin.aspx">
+            <i class='bx bxs-calendar-check'></i>
+            <span class="text">
+                <h3><asp:Literal ID="ComplaintsCount" runat="server"></asp:Literal></h3>
+                <p>Submitted Complaints</p>
+            </span>
+        </a>
+    </li>
+    <li>
+        <a href="pendingreq.aspx">
+            <i class='bx bxs-hourglass'></i>
+            <span class="text">
+                <h3><asp:Literal ID="PendingRequestsCount" runat="server"></asp:Literal></h3>
+                <p>Pending Requests</p>
+            </span>
+        </a>
+    </li>
+    <li>
+        <a href="settled_complaints_page.aspx"> <!-- Add your desired URL here -->
+            <i class='bx bxs-check-circle'></i>
+            <span class="text">
+                <h3><asp:Literal ID="SettledComplaintsCount" runat="server"></asp:Literal></h3>
+                <p>Settled Complaints</p>
+            </span>
+        </a>
+    </li>
+</ul>
+
+            <!-- End Display Complaints Count -->
+
+            <!-- Display Pending Requests -->
+            <div id="pendingRequestsContainer">
+                <!-- Your pending requests content goes here -->
+            </div>
+            <!-- End Display Pending Requests -->
+
+            <!-- Display Settled Complaints -->
+            <div id="settledComplaintsContainer">
+                <!-- Your settled complaints content goes here -->
+            </div>
+            <!-- End Display Settled Complaints -->
+
+            <!-- Display All Complaints -->
+            <div id="allComplaintsContainer">
+                <!-- Your all complaints content goes here -->
+            </div>
+            <!-- End Display All Complaints -->
+
+            <!-- Display Complaints -->
+            <div id="complaintsContainer">
+               <asp:Repeater ID="ComplaintsRepeater" runat="server">
+    <ItemTemplate>
+        <div class="complaint-box">
+            <p>Report Type: <asp:Literal ID="ReportTypeLiteral" runat="server" Text='<%# Eval("reporttype") %>'></asp:Literal></p>
+            <p>Address: <asp:Literal ID="AddressLiteral" runat="server" Text='<%# Eval("address") %>'></asp:Literal></p>
+            <p>Others: <asp:Literal ID="OthersLiteral" runat="server" Text='<%# Eval("others") %>'></asp:Literal></p>
+            <asp:Image ID="ComplaintImage" runat="server" ImageUrl='<%# GetImagePath(Eval("filepath")) %>' Visible='<%# !string.IsNullOrEmpty((string)Eval("filepath")) %>' />
+            
+            <!-- Resolve and Confirm Complaints buttons -->
+            <div class="modal-buttons">
+                <button class="modal-button resolve-button" id="resolveButton_<%# Container.ItemIndex %>" onclick="redirectToResolve(<%# Container.ItemIndex %>)">Resolve</button>
+                <button class="modal-button confirm-button" id="confirmButton_<%# Container.ItemIndex %>" onclick="redirectToPendingReq()">Confirm Complaint</button>
+            </div>
+        </div>
+    </ItemTemplate>
+</asp:Repeater>
+
+
+                <asp:Literal ID="DebugLiteral" runat="server"></asp:Literal>
+            </div>
+            <!-- End Display Complaints -->
+        </main>
+        <!-- MAIN -->
+    </section>
+    <!-- CONTENT -->
+
+    <!-- The Modal -->
+    <div id="logoutModal" class="modal">
+        <div class="modal-content">
+            <h2>Are you sure you want to sign out?</h2>
+            <div class="modal-buttons">
+                <button class="modal-button cancel-button" id="cancelButton">Cancel</button>
+                <button class="modal-button logout-button" id="logoutButton">Sign Out</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        document.getElementById('logout-link').addEventListener('click', function (event) {
+            event.preventDefault();
+            document.getElementById('logoutModal').style.display = 'block';
+        });
+
+        document.getElementById('cancelButton').addEventListener('click', function () {
+            document.getElementById('logoutModal').style.display = 'none';
+        });
+    </script>
+    <script>
+        function redirectToPendingReq() {
+            window.location.href = "pendingreq.aspx";
+        }
+
+        function redirectToResolve(index) {
+            window.location.href = "resolve.aspx?index=" + index;
+        }
+
+        document.getElementById('logout-link').addEventListener('click', function (event) {
+            event.preventDefault();
+            document.getElementById('logoutModal').style.display = 'block';
+        });
+
+        document.getElementById('cancelButton').addEventListener('click', function () {
+            document.getElementById('logoutModal').style.display = 'none';
+        });
+    </script>
+
+</body>
+</html>
+
