@@ -1,7 +1,9 @@
 using System;
+using System.ComponentModel;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.Web.UI;
 using System.Web.UI.WebControls;
 using MySql.Data.MySqlClient;
 
@@ -15,6 +17,7 @@ namespace WebApplication1
             {
                 BindComplaints();
                 DisplayComplaintsCount();
+                SetSettledComplaintsCount();
             }
         }
 
@@ -75,6 +78,29 @@ namespace WebApplication1
                 }
             }
         }
+        private void SetSettledComplaintsCount()
+        {
+            // Construct your connection string
+            string connectionString = "server=localhost;database=WEC;uid=root;pwd=";
+
+            // Construct your SQL query to get the count of settled complaints
+            string query = "SELECT COUNT(*) FROM resolvedcomps";
+
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                using (MySqlCommand command = new MySqlCommand(query, connection))
+                {
+                    // Open connection
+                    connection.Open();
+
+                    // Execute the command and get the count
+                    int count = Convert.ToInt32(command.ExecuteScalar());
+
+                    // Assign the count to the SettledComplaintsCount literal control
+                    SettledComplaintsCount.Text = count.ToString();
+                }
+            }
+        }
 
         protected string GetImagePath(object filepath)
         {
@@ -104,11 +130,14 @@ namespace WebApplication1
                     if (rowsAffected > 0)
                     {
                         DeleteComplaint(complaintIndex);
+                        // Display success message
+                        ScriptManager.RegisterStartupScript(this, GetType(), "ShowSuccessMessage", "alert('The report has been resolved');", true);
+                        // Redirect to pendingreq.aspx
+                        Response.Redirect(Request.RawUrl); // Refresh the page
                     }
                 }
             }
         }
-
 
         private void DeleteComplaint(int complaintIndex)
         {
@@ -132,6 +161,7 @@ namespace WebApplication1
             int index = int.Parse(confirmButton.CommandArgument);
             ConfirmComplaint(index);
             BindComplaints(); // Refresh the complaints list after confirming a complaint
+            Response.Redirect(Request.RawUrl);
         }
     }
 }
