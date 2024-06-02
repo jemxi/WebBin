@@ -1,0 +1,275 @@
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="dashboard.aspx.cs" Inherits="WebApplication1.dashboard" %>
+
+<!DOCTYPE html>
+<html lang="en">
+<head runat="server">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Boxicons -->
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet' />
+    <!-- My CSS -->
+    <link rel="stylesheet" href="style.css" />
+
+    <title>Dashboard</title>
+
+    <style>
+    .modal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+        animation: fadeIn 0.3s; /* Fade in animation */
+    }
+
+    .modal-content {
+        background-color: #fefefe;x
+        margin: 15% auto; /* 15% from the top and centered */
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%; /* Could be more or less, depending on screen size */
+        max-width: 400px;
+        border-radius: 8px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        text-align: center;
+        animation: slideIn 0.3s; /* Slide in animation */
+    }
+
+    .modal-content h2 {
+        margin: 0 0 20px;
+    }
+
+    .modal-buttons {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .modal-button {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.3s; /* Hover effect */
+    }
+
+    .cancel-button {
+        background-color: #e0e0e0;
+        color: #333;
+    }
+
+    .cancel-button:hover {
+        background-color: #d5d5d5;
+        transform: scale(1.05);
+    }
+
+    .logout-button {
+        background-color: #6a5acd;
+        color: white;
+    }
+
+    .logout-button:hover {
+        background-color: #5949c1;
+        transform: scale(1.05);
+    }
+
+    @keyframes fadeIn {
+        from {opacity: 0;}
+        to {opacity: 1;}
+    }
+
+    @keyframes slideIn {
+        from {transform: translateY(-50px); opacity: 0;}
+        to {transform: translateY(0); opacity: 1;}
+    }
+
+    .complaint-box {
+        border: 1px solid #ddd;
+        padding: 15px;
+        margin: 10px;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        background-color: #fff;
+    }
+
+    .complaint-box img {
+        max-width: 100%;
+        height: auto;
+        margin-top: 10px;
+    }
+
+    .complaint-box h3 {
+        margin: 0;
+        font-size: 1.2em;
+    }
+
+    .complaint-box p {
+        margin: 5px 0;
+    }
+</style>
+</head>
+<body>
+
+    <!-- SIDEBAR -->
+    <section id="sidebar">
+        <a href="#" class="brand">
+            <i class='bx bxs-smile'></i>
+            <span class="text">Welcome to WeBin</span>
+        </a>
+        <ul class="side-menu top">
+            <li class="active">
+                <a href="#">
+                    <i class='bx bxs-dashboard'></i>
+                    <span class="text">Dashboard</span>
+                </a>
+            </li>
+            <li>
+                <a href="map.aspx">
+                    <i class='bx bxs-shopping-bag-alt'></i>
+                    <span class="text">Maps</span>
+                </a>
+            </li>
+            <li>
+                <a href="complaint.aspx">
+                    <i class='bx bxs-doughnut-chart'></i>
+                    <span class="text">Complaint</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class='bx bxs-cog'></i>
+                    <span class="text">Settings</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="logout" id="logout-link">
+                    <i class='bx bxs-log-out-circle'></i>
+                    <span class="text">Logout</span>
+                </a>
+            </li>
+        </ul>
+    </section>
+    <!-- SIDEBAR -->
+
+    <!-- CONTENT -->
+    <section id="content">
+        <!-- NAVBAR -->
+        <nav>
+            <i class='bx bx-menu'></i>
+            <a href="#" class="nav-link">Categories</a>
+            <form runat="server">
+                <div class="form-input">
+                    <input type="search" placeholder="Search..." />
+                    <button type="submit" class="search-btn"><i class='bx bx-search'></i></button>
+                </div>
+            </form>
+            <input type="checkbox" id="switch-mode" hidden />
+            <label for="switch-mode" class="switch-mode"></label>
+            <a href="#" class="notification">
+                <i class='bx bxs-bell'></i>
+                <span class="num">8</span>
+            </a>
+            <a href="#" class="profile">
+                <img src="img/people.png" />
+            </a>
+        </nav>
+        <!-- NAVBAR -->
+
+        <!-- MAIN -->
+        <main>
+            <div class="head-title">
+                <div class="left">
+                    <h1>Dashboard</h1>
+                    <ul class="breadcrumb">
+                        <li>
+                            <a href="#">Dashboard</a>
+                        </li>
+                        <li><i class='bx bx-chevron-right'></i></li>
+                        <li>
+                            <a class="active" href="#">Home</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Display Complaints Count -->
+            <ul class="box-info">
+    <li>
+        <a href="dashboard.aspx">
+            <i class='bx bxs-calendar-check'></i>
+            <span class="text">
+                <h3><asp:Literal ID="ComplaintsCount" runat="server"></asp:Literal></h3>
+                <p>Submitted Complaints</p>
+            </span>
+        </a>
+    </li>
+    <li>
+        <a href="pendingreq.aspx">
+            <i class='bx bxs-check-circle'></i>
+            <span class="text">
+                <h3><asp:Literal ID="SettledComplaintsCount" runat="server"></asp:Literal></h3>
+                <p>Settled Complaints</p>
+            </span>
+        </a>
+    </li>
+    <li>
+        <a href="pending_user.aspx">
+            <i class='bx bxs-hourglass'></i>
+            <span class="text">
+                <h3><asp:Literal ID="PendingRequestsCount" runat="server"></asp:Literal></h3>
+                <p>Pending Requests</p>
+            </span>
+        </a>
+    </li>
+</ul>
+
+            <!-- End Display Complaints Count -->
+
+            <!-- Display Complaints -->
+            <div id="complaintsContainer">
+                <asp:Repeater ID="ComplaintsRepeater" runat="server">
+                    <ItemTemplate>
+                        <div class="complaint-box">
+                            <p>Report Type: <asp:Literal ID="ReportTypeLiteral" runat="server" Text='<%# Eval("reporttype") %>'></asp:Literal></p>
+                            <p>Address: <asp:Literal ID="AddressLiteral" runat="server" Text='<%# Eval("address") %>'></asp:Literal></p>
+                            <p>Others: <asp:Literal ID="OthersLiteral" runat="server" Text='<%# Eval("others") %>'></asp:Literal></p>
+                            <asp:Image ID="ComplaintImage" runat="server" ImageUrl='<%# Page.GetType().InvokeMember("GetImagePath", System.Reflection.BindingFlags.InvokeMethod, null, Page, new object[] { Eval("filepath") }) %>' Visible='<%# !string.IsNullOrEmpty((string)Eval("filepath")) %>' />
+                        </div>
+                    </ItemTemplate>
+                </asp:Repeater>
+                <asp:Literal ID="DebugLiteral" runat="server"></asp:Literal>
+            </div>
+            <!-- End Display Complaints -->
+        </main>
+        <!-- MAIN -->
+    </section>
+    <!-- CONTENT -->
+
+    <!-- The Modal -->
+    <div id="logoutModal" class="modal">
+        <div class="modal-content">
+            <h2>Are you sure you want to sign out?</h2>
+            <div class="modal-buttons">
+                <button class="modal-button cancel-button" id="cancelButton">Cancel</button>
+                <button class="modal-button logout-button" id="logoutButton">Sign Out</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        document.getElementById('logout-link').addEventListener('click', function (event) {
+            event.preventDefault();
+            document.getElementById('logoutModal').style.display = 'block';
+        });
+
+        document.getElementById('cancelButton').addEventListener('click', function () {
+            document.getElementById('logoutModal').style.display = 'none';
+        });
+    </script>
+</body>
+</html>
