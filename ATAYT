@@ -1,202 +1,81 @@
-<%@ Page Language="C#" AutoEventWireup="true" CodeFile="adminlogin.aspx.cs" Inherits="WebApplication1.adminlogin" %>
+using MySql.Data.MySqlClient;
+using System;
+using System.Web.UI;
 
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
-    <title>Admin Login</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-image: linear-gradient(45deg, #305830, #4cff00);
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+namespace WebApplication1
+{
+    public partial class adminlogin : System.Web.UI.Page
+    {
+        protected void Page_Load(object sender, EventArgs e)
+        {
         }
 
-        #login-container {
-            background-color: #fff;
-            width: 350px;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
-            position: relative;
-        }
+        protected void Button1_Click(object sender, EventArgs e)
+        {
+            string connectionString = "server=localhost;database=WEC;uid=root;pwd=";
+            string username = usernametxt.Text;
+            string password = passtxt.Text;
 
-        #login-container::before {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background-color: #009cde;
-            border-radius: 10px;
-            top: 10px;
-            left: 10px;
-            z-index: -1;
-        }
-
-        #login-container h2 {
-            margin-bottom: 20px;
-            color: #007bbd;
-            font-size: 24px;
-            font-weight: bold;
-            text-align: center;
-        }
-
-        .input-group {
-            margin-bottom: 20px;
-            position: relative;
-        }
-
-        .input-group input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            outline: none;
-            transition: border-color 0.3s, box-shadow 0.3s;
-        }
-
-        .input-group input:focus {
-            border-color: #009cde;
-            box-shadow: 0 0 5px rgba(0, 156, 222, 0.5);
-        }
-
-        .input-group .toggle-password {
-            position: absolute;
-            top: 50%;
-            right: 10px;
-            transform: translateY(-50%);
-            cursor: pointer;
-            color: #ccc;
-            transition: color 0.3s;
-        }
-
-        .input-group .toggle-password:hover {
-            color: #009cde;
-        }
-
-        .button-group {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        .button-group .button {
-            width: 100%;
-            padding: 10px;
-            border: none;
-            background-color: #009cde;
-            color: #fff;
-            cursor: pointer;
-            border-radius: 5px;
-            font-weight: bold;
-            transition: background-color 0.3s, transform 0.3s;
-        }
-
-        .button-group .button:hover {
-            background-color: #007bbd;
-            transform: scale(1.02);
-        }
-
-        .button-group .button:active {
-            transform: scale(0.98);
-        }
-
-        .google-button {
-            margin-top: 10px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            background-color: #fff;
-            cursor: pointer;
-            transition: box-shadow 0.3s;
-        }
-
-        .google-button:hover {
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-        }
-
-        .google-button img {
-            width: 20px;
-            margin-right: 10px;
-        }
-
-        .google-button span {
-            font-size: 14px;
-            color: #333;
-        }
-
-        .error-message {
-            color: red;
-            margin-top: 5px;
-            font-size: 12px;
-        }
-
-        #back-menu {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            z-index: 999;
-        }
-
-        #back-menu a {
-            text-decoration: none;
-            color: #fff;
-            font-weight: bold;
-            font-size: 24px;
-        }
-
-        .error {
-            border: 2px solid red;
-        }
-    </style>
-    <script type="text/javascript">
-        function togglePassword() {
-            var passwordField = document.getElementById('<%= passtxt.ClientID %>');
-            var toggleIcon = document.getElementById('toggleIcon');
-            if (passwordField.type === "password") {
-                passwordField.type = "text";
-                toggleIcon.classList.remove('fa-eye-slash');
-                toggleIcon.classList.add('fa-eye');
-            } else {
-                passwordField.type = "password";
-                toggleIcon.classList.remove('fa-eye');
-                toggleIcon.classList.add('fa-eye-slash');
+            if (IsValidLogin(connectionString, username, password))
+            {
+                // Redirect to dashmin.aspx upon successful login
+                Response.Redirect("dashmin.aspx");
+            }
+            else
+            {
+                // Display error for invalid login
+                PasswordErrorMessage.Text = "Bro think about your password!, wag ulyanin pare hays!";
+                PasswordErrorMessage.Visible = true;
+                string errorScript = @"
+                    document.getElementById('" + usernametxt.ClientID + @"').classList.add('error');
+                    document.getElementById('" + passtxt.ClientID + @"').classList.add('error');
+                ";
+                ClientScript.RegisterStartupScript(this.GetType(), "loginError", errorScript, true);
+                ClearTextBoxes();
             }
         }
-    </script>
-</head>
-<body>
-    <form id="form1" runat="server">
 
-        <div id="back-menu">
-            <asp:HyperLink ID="backLink" runat="server" NavigateUrl="index.aspx"> <i class="fas fa-arrow-left"></i>
-            </asp:HyperLink>
-        </div>
+        private bool IsValidLogin(string connectionString, string username, string password)
+        {
+            string query = "SELECT COUNT(*) FROM admin WHERE username = @username AND password = @password";
 
-        <div id="login-container">
-            <h2>LOGIN AS ADMIN</h2>
-            <div class="input-group">
-                <asp:TextBox ID="usernametxt" runat="server" placeholder="Email Address" required="required"></asp:TextBox>
-                <asp:Label ID="UsernameErrorMessage" runat="server" CssClass="error-message" Text="" Visible="false"></asp:Label>
-            </div>
-            <div class="input-group">
-                <asp:TextBox ID="passtxt" runat="server" TextMode="Password" placeholder="Password" required="required"></asp:TextBox>
-                <span class="toggle-password" onclick="togglePassword()">
-                    <i id="toggleIcon" class="fas fa-eye-slash"></i>
-                </span>
-                <asp:Label ID="PasswordErrorMessage" runat="server" CssClass="error-message" Text="" Visible="false"></asp:Label>
-            </div>
-            <div class="button-group">
-                <asp:Button ID="Button1" runat="server" CssClass="button" Text="Submit" OnClick="Button1_Click" />
-            </div>
-        </div>
-    </form>
-</body>
-</html>
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                using (MySqlCommand command = new MySqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@username", username);
+                    command.Parameters.AddWithValue("@password", password);
+
+                    connection.Open();
+                    int count = Convert.ToInt32(command.ExecuteScalar());
+
+                    return count > 0;
+                }
+            }
+        }
+
+        protected void clearbtn_Click(object sender, EventArgs e)
+        {
+            ClearTextBoxes();
+        }
+
+        private void ClearTextBoxes()
+        {
+            usernametxt.Text = "";
+            passtxt.Text = "";
+
+            // Remove error class on clear
+            string clearErrorScript = @"
+                document.getElementById('" + usernametxt.ClientID + @"').classList.remove('error');
+                document.getElementById('" + passtxt.ClientID + @"').classList.remove('error');
+            ";
+            ClientScript.RegisterStartupScript(this.GetType(), "clearError", clearErrorScript, true);
+        }
+
+        protected void cancelbtn_Click(object sender, EventArgs e)
+        {
+            string script = "window.close();";
+            ClientScript.RegisterStartupScript(this.GetType(), "closeWindow", script, true);
+        }
+    }
+}
