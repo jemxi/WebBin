@@ -1,200 +1,92 @@
-<%@ Page Language="C#" AutoEventWireup="true" CodeFile="resetpassword.aspx.cs" Inherits="WebApplication1.resetpassword" %>
+using System;
+using System.Net.Mail;
 
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
-    <title>Reset Password</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-    <style>
-        body {
-            background-color: #305830;
-            color: white;
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+namespace WebApplication1
+{
+    public partial class resetpassword : System.Web.UI.Page
+    {
+        protected void Page_Load(object sender, EventArgs e)
+        {
+
         }
 
-        #form-container {
-            width: 300px;
-            padding: 20px;
-            border-radius: 8px;
-            background-color: #fff;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        protected void btnSendOTP_Click(object sender, EventArgs e)
+        {
+            // Check if email address is provided
+            if (string.IsNullOrEmpty(txtEmail.Text.Trim()))
+            {
+                lblMessage.Text = "Email empty";
+                return;
+            }
+
+            // Generate a random OTP (You may have your own method for generating OTP)
+            Random random = new Random();
+            string otp = random.Next(100000, 999999).ToString();
+
+            // Get the email address entered by the user
+            string userEmail = txtEmail.Text;
+
+            // Send the OTP to the user's email address
+            SendOTP(userEmail, otp);
+
+            // You can optionally store the OTP in a session or database for verification later
+            Session["OTP"] = otp;
+
+            // Show the OTP input panel
+            pnlOTP.Visible = true;
         }
 
-        h2 {
-            text-align: center;
-            margin-bottom: 20px;
-            color: #305830;
-        }
+        protected void btnVerifyOTP_Click(object sender, EventArgs e)
+        {
+            // Get the OTP entered by the user
+            string enteredOTP = txtOTP.Text;
 
-        .input-container {
-            position: relative;
-            margin-bottom: 8px;
-        }
+            // Get the OTP stored in session or database
+            string storedOTP = Session["OTP"] as string;
 
-        input[type=text], input[type=email], input[type=password] {
-            width: calc(100% - 40px);
-            padding: 10px 10px 10px 25px;
-            border: 2px solid #ccc;
-            border-radius: 20px;
-            outline: none;
-            border-color: #305830;
-            transition: border-color 0.3s, transform 0.2s;
-        }
-
-        input[type=text]:focus, input[type=email]:focus, input[type=password]:focus {
-            border-color: #305830;
-            transform: scale(1.05);
-        }
-
-        .icon {
-            position: absolute;
-            left: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #305830;
-        }
-
-        .notification {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: rgba(0, 128, 0, 0.8);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 5px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-            z-index: 999;
-        }
-
-        #pnlOTP {
-            display: block;
-        }
-
-        input[type=button], input[type=submit] {
-            border-style: none;
-            border-color: inherit;
-            border-width: medium;
-            width: calc(50% - 10px);
-            padding: 10px;
-            margin: 8px 5px;
-            border-radius: 20px;
-            background-color: #305830;
-            color: white;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-            top: 0px;
-            left: 1px;
-            transition: background-color 0.3s, transform 0.2s;
-        }
-
-        input[type=button]:hover, input[type=submit]:hover {
-            background-color: #2c4b2b;
-            transform: scale(1.05);
-        }
-
-        input[type=button]:active, input[type=submit]:active {
-            transform: scale(0.95);
-        }
-
-        #back-button {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            color: #fff;
-            text-decoration: none;
-            font-size: 24px; 
-        }
-
-        #back-button:hover {
-            color: #0026ff;
-        }
-
-    </style>
-</head>
-<body>
-
-     <a href="WebForm1.aspx" id="back-button"><i class="fas fa-arrow-left"></i></a>
-
-    <form id="form1" runat="server">
-        <div id="form-container">
-            <h2>Reset Password</h2>
-            <asp:Label ID="lblMessage" runat="server" Text=""></asp:Label>
-            <div class="input-container">
-                <i class="fas fa-envelope icon"></i>
-                <asp:TextBox ID="txtEmail" runat="server" placeholder="Enter your email"></asp:TextBox>
-            </div>
-            <div style="display: flex; justify-content: space-between;">
-                <asp:Button ID="btnSendOTP" runat="server" Text="Send OTP" OnClick="btnSendOTP_Click" OnClientClick="return sendOTPNotification()" />
-                <asp:Button ID="btnreSendOTP0" runat="server" Text="Resend OTP" OnClick="btnResendOTP_Click" OnClientClick="return resendOTPNotification()" />
-            </div>
-            <div id="pnlOTP" class="otp-panel" runat="server">
-                <div class="input-container">
-                    <i class="fas fa-lock icon"></i>
-                    <asp:TextBox ID="txtOTP" runat="server" TextMode="Password" placeholder="Enter OTP"></asp:TextBox>
-                </div>
-                <asp:Button ID="btnVerifyOTP" runat="server" Text="Verify OTP" OnClick="btnVerifyOTP_Click" OnClientClick="verifyOTPNotification()" />
-            </div>
-        </div>
-    </form>
-    <script>
-        function showNotification(message) {
-            // Create a notification element
-            var notification = document.createElement('div');
-            notification.className = 'notification';
-            notification.textContent = message;
-            document.body.appendChild(notification);
-
-            // Remove the notification after 3 seconds
-            setTimeout(function () {
-                document.body.removeChild(notification);
-            }, 3000);
-        }
-
-        function sendOTPNotification() {
-            var email = document.getElementById('<%= txtEmail.ClientID %>').value.trim();
-            if (email === '') {
-                showNotification('You must enter an email address');
-                return false;
-            } else if (email === '@') {
-                showNotification('That\'s not a valid email address. Shut up.');
-                return false;
-            } else if (email.indexOf('@') === -1) {
-                showNotification('You must enter an "@" in the email address');
-                return false;
-            } else {
-                showNotification('OTP has been sent');
-                return true;
+            if (storedOTP != null) // Check if storedOTP is not null
+            {
+                // Verify the entered OTP with the stored OTP
+                if (enteredOTP == storedOTP)
+                {
+                    lblMessage.Text = "OTP verified successfully!";
+                    // Redirect to password reset page or perform further actions
+                }
+                else
+                {
+                    lblMessage.Text = "Invalid OTP. Please try again.";
+                }
+            }
+            else
+            {
+                lblMessage.Text = "Session expired. Please request a new OTP.";
             }
         }
 
-        function resendOTPNotification() {
-            var email = document.getElementById('<%= txtEmail.ClientID %>').value.trim();
-            if (email === '') {
-                showNotification('You must input a valid email address');
-                return false;
-            } else {
-                // Here you can handle the 404 error for URL not found
-                // For now, just display a notification
-                showNotification('404 URL not found');
-                return false;
-            }
+        protected void btnResendOTP_Click(object sender, EventArgs e)
+        {
+            // Redirect to a 404 URL
+            Response.Redirect("404.html");
         }
 
-        function verifyOTPNotification(result) {
-            if (result) {
-                showNotification('Verified OTP');
-            } else {
-                showNotification('OTP not matched');
-            }
+        // Method to send OTP via email
+        private void SendOTP(string userEmail, string otp)
+        {
+            // Configure the SMTP client
+            SmtpClient smtpClient = new SmtpClient("smtp.gmail.com");
+            smtpClient.Port = 587; // You may need to change this port based on your email provider
+            smtpClient.EnableSsl = true; // Enable SSL if required
+            smtpClient.Credentials = new System.Net.NetworkCredential("azjohnemmanuel@gmail.com", "ekdgjdbbhhkfhkqi");
+
+            // Prepare the email message
+            MailMessage mailMessage = new MailMessage();
+            mailMessage.From = new MailAddress("azjohnemmanuel@gmail.com");
+            mailMessage.To.Add(userEmail);
+            mailMessage.Subject = "Reset Password OTP";
+            mailMessage.Body = "Your OTP is: " + otp;
+
+            // Send the email
+            smtpClient.Send(mailMessage);
         }
-    </script>
-</body>
-</html>
+    }
+}
