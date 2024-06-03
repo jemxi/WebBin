@@ -1,199 +1,249 @@
-using System;
-using System.Web.UI;
-using MySql.Data.MySqlClient;
-using BCrypt.Net;
-using System.Text.RegularExpressions;
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="WebForm1.aspx.cs" Inherits="WebApplication1.WebForm1" %>
 
-namespace WebApplication1
-{
-    public partial class createacc : Page
-    {
-        // Define your MySQL connection string
-        string connectionString = "server=localhost;database=WEC;uid=root;pwd=";
+<!DOCTYPE html>
 
-        protected void Page_Load(object sender, EventArgs e)
-        {
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>Login Page</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: linear-gradient(45deg, #305830, #4cff00);
+            margin: 0;
+            padding: 0;
+            color: #305830;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        #login-container {
+            width: 320px;
+            background-color: #fff;
+            border-radius: 30px;
+            border-top-right-radius: 0;
+            padding: 20px;
+            box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+        }
+        #login-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+            text-align: center;
         }
 
-        // Event handler for submit button click
-        protected void Button1_Click(object sender, EventArgs e)
-        {
-            string username = usernametxt.Text;
-            string phoneNumber = phoneno.Text;
-            string password = pwtxt.Text;
+        .form-group button {
+            margin: 5px; 
+        }
 
-            // Get the selected address from the dropdown list
-            string address = addressDropdown.SelectedItem.Text;
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #305830;
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        .form-group input[type="text"],
+        .form-group input[type="password"] {
+            width: 100%;
+            padding: 10px 10px 10px 40px;
+            border: 2px solid #ccc;
+            border-radius: 20px;
+            outline: none;
+            border-color: #305830;
+            transition: border-color 0.3s, transform 0.3s;
+            box-sizing: border-box;
+        }
+        .form-group input[type="text"]:hover,
+        .form-group input[type="password"]:hover {
+            transform: scale(1.05);
+        }
+        .form-group input[type="text"]:focus,
+        .form-group input[type="password"]:focus {
+            border-color: #305830;
+            transform: scale(1.1);
+        }
+        .form-group input[type="submit"],
+        .form-group button {
+            border-style: none;
+            border-color: inherit;
+            border-width: medium;
+            padding: 10px;
+            background-image: linear-gradient(45deg, #305830, #305830);
+            color: #fff;
+            cursor: pointer;
+            border-radius: 30px;
+            outline: none;
+            width: calc(33.33% - 5px);
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        .form-group input[type="submit"]:hover,
+        .form-group button:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+        .form-group input[type="submit"]:active,
+        .form-group button:active {
+            transform: scale(0.95);
+        }
+        .form-group #Label1,
+        .form-group #HyperLink1 {
+            display: block;
+            font-size: 20px;
+            margin: 10px auto;
+            color: #305830;
+        }
+        .form-group #HyperLink1:hover {
+            color: #0056b3;
+        }
+        .GoogleButton {
+            display: block;
+            text-align: center;
+            width: 100%;
+            margin: 10px auto 0;
+            margin-top: -10px;
+        }
+        .GoogleButton button {
+            background-color: transparent;
+            color: #305830;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            border-radius: 3px;
+            transition: background-color 0.3s, transform 0.3s;
+            margin-top: -10px;
+        }
+        .GoogleButton button:hover {
+            background-color: #f0f0f0;
+            transform: scale(1.05);
+        }
+        .GoogleButton button:active {
+            transform: scale(0.95);
+        }
+        .GoogleButton i {
+            margin-right: 10px;
+        }
+        .admin-login {
+            display: block;
+            padding: 10px 20px;
+            background-color: #0094ff;
+            border-radius: 10px;
+            border: 1px solid #0094ff;
+            transition: background-color 0.3s, transform 0.3s;
+            color: white;
+            text-decoration: none;
+            margin-top: 10px; 
+        }
 
-            // Check if reCAPTCHA is successfully verified
-            if (!IsCaptchaVerified())
-            {
-                // Display error message if reCAPTCHA verification fails
-                successLabel.Text = "Please verify reCAPTCHA!";
-                successLabel.ForeColor = System.Drawing.Color.Red;
-                successLabel.Visible = true;
-                return;
+        .admin-login:hover {
+            transform: scale(1.05);
+            background-color: #009cde;
+            border: 1px solid #009cde;
+        }
+        .admin-login:active {
+            transform: scale(0.95);
+        }
+        .password-container {
+            position: relative;
+        }
+        .password-container .toggle-password {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+        }
+        .input-error {
+            border-color: red !important;
+        }
+
+        .error-message {
+            display: none;
+            color: red;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+         #back-menu {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 999;
+        }
+        #back-menu a {
+            text-decoration: none;
+            color: #fff;
+            font-weight: bold;
+            font-size: 24px;
+        }
+
+
+    </style>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+</head>
+<body>
+    <form id="form1" runat="server">
+
+          <div id="back-menu">
+             <asp:HyperLink ID="backLink" runat="server" NavigateUrl="index.aspx"> <i class="fas fa-arrow-left"></i>
+             </asp:HyperLink>
+         </div>
+
+
+        <div id="login-container">
+            <h2>LOGIN</h2>
+
+         <asp:Label ID="ErrorMessageLabel" runat="server" CssClass="error-message" Visible="false"></asp:Label>
+
+
+            <div class="form-group">
+                <label for="usernametxt"><i class="fas fa-user"></i></label>
+                <asp:TextBox ID="usernametxt" runat="server" required="required" placeholder="Username"></asp:TextBox>
+            </div>
+            <div class="form-group password-container">
+                <label for="pwtxt"><i class="fas fa-lock"></i></label>
+                <asp:TextBox ID="pwtxt" runat="server" TextMode="Password" required="required" placeholder="Password" CssClass="password-textbox"></asp:TextBox>
+                <i id="togglePasswordIcon" class="fas fa-eye toggle-password" onclick="togglePassword()"></i>
+            </div>
+            <div class="form-group">
+                <div class="g-recaptcha" data-sitekey="6Lei1MIpAAAAAHC3x-MbL_l5LgSYVKyrwY3j25yc"></div>
+            </div>
+            <div class="form-group">
+                <asp:Button ID="loginbtn" runat="server" Text="LOGIN" CssClass="loginbtn" OnClick="Button1_Click" />
+                <asp:Button ID="clearbtn" runat="server" OnClick="Button1_Click1" Text="CLEAR" />
+                <asp:Button ID="cancelbtn" runat="server" OnClick="Button2_Click" Text="CANCEL" />
+                <asp:HyperLink ID="HyperLinkAdminLogin" runat="server" NavigateUrl="adminlogin.aspx" CssClass="admin-login" Text="LOGIN AS ADMIN" />
+            </div>
+            <div class="GoogleButton">
+                <asp:Button ID="Button2" runat="server" Text="Sign in with Google" OnClick="GoogleLoginButton_Click" />
+            </div>
+            <div class="form-group">
+                <asp:HyperLink ID="HyperLink2" runat="server" NavigateUrl="~/resetpassword.aspx" Text="Forgot Password?" Font-Size="12px" ForeColor="#FF0000"></asp:HyperLink>
+                <asp:Label ID="Label1" runat="server" Text="Don't have an account?" Font-Size="12px" ForeColor="#305830"></asp:Label>
+                <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="~/createacc.aspx" Font-Size="12px" ForeColor="#0000FF">Create one</asp:HyperLink>
+            </div>
+        </div>
+    </form>
+    <script>
+        function togglePassword() {
+            var pwField = document.getElementById('<%= pwtxt.ClientID %>');
+            var pwToggle = document.getElementById('togglePasswordIcon');
+            if (pwField.type === "password") {
+                pwField.type = "text";
+                pwToggle.classList.remove('fa-eye');
+                pwToggle.classList.add('fa-eye-slash');
+            } else {
+                pwField.type = "password";
+                pwToggle.classList.remove('fa-eye-slash');
+                pwToggle.classList.add('fa-eye');
             }
-
-            // Check password strength
-            if (!IsValidPassword(password))
-            {
-                // Display error message if password does not meet expectations
-                successLabel.Text = "Password must be at least 8 characters long and contain an uppercase letter, a lowercase letter, a number, and a special character.";
-                successLabel.ForeColor = System.Drawing.Color.Red;
-                successLabel.Visible = true;
-                return;
-            }
-
-            // Validate phone number
-            if (!IsValidPhoneNumber(phoneNumber))
-            {
-                // Notification already displayed in IsValidPhoneNumber method
-                return;
-            }
-
-            InsertUser(username, phoneNumber, address, password);
-
-            ClearTextBoxes();
         }
-
-        // Function to validate phone number length
-        private bool IsValidPhoneNumber(string phoneNumber)
-        {
-            // Remove non-numeric characters from phone number
-            string numericPhoneNumber = Regex.Replace(phoneNumber, @"\D", "");
-
-            bool isValid = numericPhoneNumber.Length == 11;
-
-            if (!isValid)
-            {
-                // Display notification if phone number is not 11 digits
-                successLabel.Text = "Phone number must be exactly 11 digits long.";
-                successLabel.ForeColor = System.Drawing.Color.Red;
-                successLabel.Visible = true;
-            }
-
-            return isValid;
-        }
-
-        // Function to check if reCAPTCHA is successfully verified
-        private bool IsCaptchaVerified()
-        {
-            string captchaResponse = Request.Form["g-recaptcha-response"];
-            if (string.IsNullOrEmpty(captchaResponse))
-            {
-                return false;
-            }
-
-            // Validate reCAPTCHA response using Google's API
-            string secretKey = "6Lei1MIpAAAAAJLNM6n4IcEhhPT3bQoEF0yp7bLe"; // Your reCAPTCHA secret key
-            string apiUrl = $"https://www.google.com/recaptcha/api/siteverify?secret={secretKey}&response={captchaResponse}";
-            using (var wc = new System.Net.WebClient())
-            {
-                var json = wc.DownloadString(apiUrl);
-                dynamic result = Newtonsoft.Json.JsonConvert.DeserializeObject(json);
-                return result.success;
-            }
-        }
-
-        // This method inserts the username, password, phone number, and address into the users table
-        private void InsertUser(string username, string phoneNumber, string address, string password)
-        {
-            // Check if username already exists
-            if (UsernameExists(username))
-            {
-                // Show error message if username already exists
-                successLabel.Text = "Account already exists!";
-                successLabel.ForeColor = System.Drawing.Color.Red;
-                successLabel.Visible = true;
-                return; // Exit method
-            }
-
-            // Hash the password before storing it
-            string hashedPassword = HashPassword(password);
-
-            // SQL query to insert username, hashed password, phone number, and address into the users table
-            string query = "INSERT INTO login (username, password, phoneno, address) VALUES (@username, @password, @phoneno, @address)";
-
-            using (MySqlConnection connection = new MySqlConnection(connectionString))
-            {
-                using (MySqlCommand command = new MySqlCommand(query, connection))
-                {
-                    command.Parameters.AddWithValue("@username", username);
-                    command.Parameters.AddWithValue("@phoneno", phoneNumber);
-                    command.Parameters.AddWithValue("@address", address);
-                    command.Parameters.AddWithValue("@password", hashedPassword);
-
-                    connection.Open();
-                    command.ExecuteNonQuery();
-                }
-            }
-
-            // Show success message
-            successLabel.Text = "Account created successfully! Redirecting to the next form...";
-            successLabel.ForeColor = System.Drawing.Color.Green;
-            successLabel.Visible = true;
-
-            // Redirect user to the next form after a short delay (if needed)
-            Response.AddHeader("REFRESH", "2;URL=WebForm1.aspx"); // Redirect after 2 seconds, change "WebForm1.aspx" to the actual URL of the next form
-        }
-
-        // Hash the password using bcrypt
-        private string HashPassword(string password)
-        {
-            return BCrypt.Net.BCrypt.HashPassword(password);
-        }
-
-        // This method checks if the username already exists in the database
-        private bool UsernameExists(string username)
-        {
-            string query = "SELECT COUNT(*) FROM login WHERE username = @username";
-
-            using (MySqlConnection connection = new MySqlConnection(connectionString))
-            {
-                using (MySqlCommand command = new MySqlCommand(query, connection))
-                {
-                    command.Parameters.AddWithValue("@username", username);
-
-                    connection.Open();
-                    int count = Convert.ToInt32(command.ExecuteScalar());
-
-                    return count > 0;
-                }
-            }
-        }
-
-        // Event handler for clear button click
-        protected void Button1_Click1(object sender, EventArgs e)
-        {
-            ClearTextBoxes();
-        }
-
-        // Clear all textboxes
-        private void ClearTextBoxes()
-        {
-            usernametxt.Text = "";
-            pwtxt.Text = "";
-            phoneno.Text = "";
-            addressDropdown.ClearSelection();
-        }
-
-        // Function to validate password strength
-        private bool IsValidPassword(string password)
-        {
-            // Check if the password contains at least one uppercase letter, one lowercase letter, one number, and one special character
-            var uppercaseRegex = new Regex("[A-Z]");
-            var lowercaseRegex = new Regex("[a-z]");
-            var numberRegex = new Regex("[0-9]");
-            var specialCharacterRegex = new Regex("[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?]+");
-
-            return password.Length >= 8 &&
-                   uppercaseRegex.IsMatch(password) &&
-                   lowercaseRegex.IsMatch(password) &&
-                   numberRegex.IsMatch(password) &&
-                   specialCharacterRegex.IsMatch(password);
-        }
-
-        protected void Button2_Click(object sender, EventArgs e)
-        {
-        }
+    </script>
+</body>
+</html>
