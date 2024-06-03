@@ -1,249 +1,128 @@
-<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="WebForm1.aspx.cs" Inherits="WebApplication1.WebForm1" %>
+using System;
+using System.Web.UI;
+using MySql.Data.MySqlClient;
+using BCrypt.Net;
 
-<!DOCTYPE html>
+namespace WebApplication1
+{
+    public partial class WebForm1 : System.Web.UI.Page
+    {
+        protected void Page_Load(object sender, EventArgs e)
+        {
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
-    <title>Login Page</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-image: linear-gradient(45deg, #305830, #4cff00);
-            margin: 0;
-            padding: 0;
-            color: #305830;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-        #login-container {
-            width: 320px;
-            background-color: #fff;
-            border-radius: 30px;
-            border-top-right-radius: 0;
-            padding: 20px;
-            box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
-        }
-        #login-container h2 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .form-group {
-            margin-bottom: 20px;
-            position: relative;
-            text-align: center;
         }
 
-        .form-group button {
-            margin: 5px; 
-        }
+        protected void Button1_Click(object sender, EventArgs e)
+        {
+            string connectionString = "server=localhost;database=WEC;uid=root;pwd=";
+            string username = usernametxt.Text;
+            string password = pwtxt.Text;
+            string recaptchaResponse = Request.Form["g-recaptcha-response"];
 
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            color: #305830;
-            position: absolute;
-            left: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-        }
-        .form-group input[type="text"],
-        .form-group input[type="password"] {
-            width: 100%;
-            padding: 10px 10px 10px 40px;
-            border: 2px solid #ccc;
-            border-radius: 20px;
-            outline: none;
-            border-color: #305830;
-            transition: border-color 0.3s, transform 0.3s;
-            box-sizing: border-box;
-        }
-        .form-group input[type="text"]:hover,
-        .form-group input[type="password"]:hover {
-            transform: scale(1.05);
-        }
-        .form-group input[type="text"]:focus,
-        .form-group input[type="password"]:focus {
-            border-color: #305830;
-            transform: scale(1.1);
-        }
-        .form-group input[type="submit"],
-        .form-group button {
-            border-style: none;
-            border-color: inherit;
-            border-width: medium;
-            padding: 10px;
-            background-image: linear-gradient(45deg, #305830, #305830);
-            color: #fff;
-            cursor: pointer;
-            border-radius: 30px;
-            outline: none;
-            width: calc(33.33% - 5px);
-            transition: background-color 0.3s, transform 0.3s;
-        }
-        .form-group input[type="submit"]:hover,
-        .form-group button:hover {
-            background-color: #0056b3;
-            transform: scale(1.05);
-        }
-        .form-group input[type="submit"]:active,
-        .form-group button:active {
-            transform: scale(0.95);
-        }
-        .form-group #Label1,
-        .form-group #HyperLink1 {
-            display: block;
-            font-size: 20px;
-            margin: 10px auto;
-            color: #305830;
-        }
-        .form-group #HyperLink1:hover {
-            color: #0056b3;
-        }
-        .GoogleButton {
-            display: block;
-            text-align: center;
-            width: 100%;
-            margin: 10px auto 0;
-            margin-top: -10px;
-        }
-        .GoogleButton button {
-            background-color: transparent;
-            color: #305830;
-            border: none;
-            padding: 0;
-            cursor: pointer;
-            border-radius: 3px;
-            transition: background-color 0.3s, transform 0.3s;
-            margin-top: -10px;
-        }
-        .GoogleButton button:hover {
-            background-color: #f0f0f0;
-            transform: scale(1.05);
-        }
-        .GoogleButton button:active {
-            transform: scale(0.95);
-        }
-        .GoogleButton i {
-            margin-right: 10px;
-        }
-        .admin-login {
-            display: block;
-            padding: 10px 20px;
-            background-color: #0094ff;
-            border-radius: 10px;
-            border: 1px solid #0094ff;
-            transition: background-color 0.3s, transform 0.3s;
-            color: white;
-            text-decoration: none;
-            margin-top: 10px; 
-        }
+            if (IsValidRecaptcha(recaptchaResponse))
+            {
+                if (IsValidLogin(connectionString, username, password))
+                {
+                    string successScript = "alert('Login successful!');";
+                    ClientScript.RegisterStartupScript(this.GetType(), "loginSuccess", successScript, true);
 
-        .admin-login:hover {
-            transform: scale(1.05);
-            background-color: #009cde;
-            border: 1px solid #009cde;
-        }
-        .admin-login:active {
-            transform: scale(0.95);
-        }
-        .password-container {
-            position: relative;
-        }
-        .password-container .toggle-password {
-            position: absolute;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            cursor: pointer;
-        }
-        .input-error {
-            border-color: red !important;
-        }
+                    ClearTextBoxes();
+                    Response.Redirect("dashboard.aspx");
+                }
+                else
+                {
+                    string errorScript = "alert('Invalid username or password!');";
+                    ClientScript.RegisterStartupScript(this.GetType(), "loginError", errorScript, true);
 
-        .error-message {
-            display: none;
-            color: red;
-            text-align: center;
-            margin-top: 5px;
-        }
-
-         #back-menu {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            z-index: 999;
-        }
-        #back-menu a {
-            text-decoration: none;
-            color: #fff;
-            font-weight: bold;
-            font-size: 24px;
-        }
-
-
-    </style>
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-</head>
-<body>
-    <form id="form1" runat="server">
-
-          <div id="back-menu">
-             <asp:HyperLink ID="backLink" runat="server" NavigateUrl="index.aspx"> <i class="fas fa-arrow-left"></i>
-             </asp:HyperLink>
-         </div>
-
-
-        <div id="login-container">
-            <h2>LOGIN</h2>
-
-         <asp:Label ID="ErrorMessageLabel" runat="server" CssClass="error-message" Visible="false"></asp:Label>
-
-
-            <div class="form-group">
-                <label for="usernametxt"><i class="fas fa-user"></i></label>
-                <asp:TextBox ID="usernametxt" runat="server" required="required" placeholder="Username"></asp:TextBox>
-            </div>
-            <div class="form-group password-container">
-                <label for="pwtxt"><i class="fas fa-lock"></i></label>
-                <asp:TextBox ID="pwtxt" runat="server" TextMode="Password" required="required" placeholder="Password" CssClass="password-textbox"></asp:TextBox>
-                <i id="togglePasswordIcon" class="fas fa-eye toggle-password" onclick="togglePassword()"></i>
-            </div>
-            <div class="form-group">
-                <div class="g-recaptcha" data-sitekey="6Lei1MIpAAAAAHC3x-MbL_l5LgSYVKyrwY3j25yc"></div>
-            </div>
-            <div class="form-group">
-                <asp:Button ID="loginbtn" runat="server" Text="LOGIN" CssClass="loginbtn" OnClick="Button1_Click" />
-                <asp:Button ID="clearbtn" runat="server" OnClick="Button1_Click1" Text="CLEAR" />
-                <asp:Button ID="cancelbtn" runat="server" OnClick="Button2_Click" Text="CANCEL" />
-                <asp:HyperLink ID="HyperLinkAdminLogin" runat="server" NavigateUrl="adminlogin.aspx" CssClass="admin-login" Text="LOGIN AS ADMIN" />
-            </div>
-            <div class="GoogleButton">
-                <asp:Button ID="Button2" runat="server" Text="Sign in with Google" OnClick="GoogleLoginButton_Click" />
-            </div>
-            <div class="form-group">
-                <asp:HyperLink ID="HyperLink2" runat="server" NavigateUrl="~/resetpassword.aspx" Text="Forgot Password?" Font-Size="12px" ForeColor="#FF0000"></asp:HyperLink>
-                <asp:Label ID="Label1" runat="server" Text="Don't have an account?" Font-Size="12px" ForeColor="#305830"></asp:Label>
-                <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="~/createacc.aspx" Font-Size="12px" ForeColor="#0000FF">Create one</asp:HyperLink>
-            </div>
-        </div>
-    </form>
-    <script>
-        function togglePassword() {
-            var pwField = document.getElementById('<%= pwtxt.ClientID %>');
-            var pwToggle = document.getElementById('togglePasswordIcon');
-            if (pwField.type === "password") {
-                pwField.type = "text";
-                pwToggle.classList.remove('fa-eye');
-                pwToggle.classList.add('fa-eye-slash');
-            } else {
-                pwField.type = "password";
-                pwToggle.classList.remove('fa-eye-slash');
-                pwToggle.classList.add('fa-eye');
+                    ClearTextBoxes();
+                }
+            }
+            else
+            {
+                string errorScript = "alert('Please complete the verification!');";
+                ClientScript.RegisterStartupScript(this.GetType(), "captchaError", errorScript, true);
             }
         }
-    </script>
-</body>
-</html>
+
+        private bool IsValidLogin(string connectionString, string username, string password)
+        {
+            string hashedPasswordFromDB = GetHashedPassword(connectionString, username);
+
+            if (hashedPasswordFromDB == null)
+            {
+                return false;
+            }
+
+            // Compare the stored hashed password with the entered password using bcrypt
+            return BCrypt.Net.BCrypt.Verify(password, hashedPasswordFromDB);
+        }
+
+        private string GetHashedPassword(string connectionString, string username)
+        {
+            string query = "SELECT password FROM login WHERE username = @username";
+
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                using (MySqlCommand command = new MySqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@username", username);
+
+                    connection.Open();
+                    object result = command.ExecuteScalar();
+
+                    return result != null ? result.ToString() : null;
+                }
+            }
+        }
+
+        protected void Button1_Click1(object sender, EventArgs e)
+        {
+            ClearTextBoxes();
+        }
+
+        private void ClearTextBoxes()
+        {
+            usernametxt.Text = "";
+            pwtxt.Text = "";
+        }
+
+        protected void Button2_Click(object sender, EventArgs e)
+        {
+            string script = "window.close();";
+            ClientScript.RegisterStartupScript(this.GetType(), "closeWindow", script, true);
+        }
+
+        private bool IsValidRecaptcha(string recaptchaResponse)
+        {
+            string secretKey = "6Lei1MIpAAAAAJLNM6n4IcEhhPT3bQoEF0yp7bLe";
+            string apiUrl = $"https://www.google.com/recaptcha/api/siteverify?secret={secretKey}&response={recaptchaResponse}";
+
+            using (var client = new System.Net.WebClient())
+            {
+                var response = client.DownloadString(apiUrl);
+                dynamic jsonData = Newtonsoft.Json.JsonConvert.DeserializeObject(response);
+                return jsonData.success == "true";
+            }
+        }
+
+        private string GetGoogleAuthenticationUrl()
+        {
+            string clientId = "702979049352-2frh4i6gvphgr4o2cagddc56tdreomch.apps.googleusercontent.com";
+            string redirectUri = "https://localhost:44329/home";
+            string scope = "email profile openid";
+
+            string url = $"https://accounts.google.com/o/oauth2/auth?" +
+                         $"client_id={clientId}&" +
+                         $"redirect_uri={redirectUri}&" +
+                         $"scope={scope}&" +
+                         $"response_type=code";
+
+            return url;
+        }
+
+        protected void GoogleLoginButton_Click(object sender, EventArgs e)
+        {
+            Response.Redirect(GetGoogleAuthenticationUrl());
+        }
+    }
+}
